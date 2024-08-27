@@ -1,0 +1,44 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;===============================================
+
+export module [
+    ;---------------------------
+    ; Private variables
+    ;---------------------------
+
+    plugins: #[]
+
+    ;---------------------------
+    ; Initialization
+    ;---------------------------
+
+    init: method [][
+        loop list ./"plugins" 'plugin [
+            name: extract.filename plugin
+            \plugins\[name]: # plugin
+        ]
+    ]
+
+    ;---------------------------
+    ; Public methods
+    ;---------------------------
+
+    valid?: method.public [str :string][
+        loop \plugins [name, plugin][
+            if attr name [
+                unless do [ return plugin\action str ] ->
+                    return false
+            ]
+        ]
+        return true
+    ]
+]!
+
+print valid?.email "yaniszafgmail.com"
