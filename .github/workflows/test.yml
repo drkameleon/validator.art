@@ -43,7 +43,8 @@ jobs:
         with:
             submodules: recursive
 
+      #echo "${{ github.workspace }}/bin" >> $GITHUB_PATH
       - name: Run unit tests
         run: |
-          echo "${{ github.workspace }}/bin" >> $GITHUB_PATH
+          arturo -v
           arturo tests/tests.art
