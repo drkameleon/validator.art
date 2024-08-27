@@ -1,2 +1,4 @@
 # validator.art
-Validation package for Arturo
+
+🔋-included, super-charged, string validation library 
+for Arturo
