@@ -1,0 +1,19 @@
+import {unitt}!
+
+loop list ./"../src/plugins" 'location [
+    name: extract.filename location
+    plugin: # location
+
+    run: [do [plugin\action v]]
+    
+    suite capitalize name [
+        test "valid" [
+            assert ->
+                every? plugin\test\valid 'v run
+        ]
+        test "invalid" [
+            assert ->
+                not? some? plugin\test\invalid 'v run
+        ]
+    ]
+]
