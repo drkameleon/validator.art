@@ -1,8 +1,18 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
 ;==========================================================
 ; Email validation plugin
 ;
 ; based on RFC5322: 
 ; https://datatracker.ietf.org/doc/html/rfc5322
+;
+; @file: src/plugins/email.art
 ;==========================================================
 
 ;------------------
