@@ -31,7 +31,7 @@ This package provides a function (`valid?`) that allows to check and validate st
 
 Simply `import` it and use the included `valid?` function:
 
-```arturo
+```red
 import "validator"!
 
 valid?.url "https://arturo-lang.io"
@@ -39,8 +39,11 @@ valid?.url "https://arturo-lang.io"
 
 valid?.email "loremIpsum@
 ; => false
+```
 
-; we may also check for more than one strings ;-)
+And we may also check more than one strings:
+
+```red
 valid?.email ["my@email.com", "info@google.com"]
 ; => true
 ```
