@@ -68,10 +68,10 @@ check if given string is valid
 
 ##### Attributes
 
-| Option | Type(s) | Description |
-|----|----|----|
-| email |  | verify e-mail address | 
-| url |  | verify URL |
+| Option | Description |
+|----|----|
+| email | verify e-mail address | 
+| url | verify URL |
 
 ##### Returns
 
