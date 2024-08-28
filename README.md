@@ -39,6 +39,10 @@ valid?.url "https://arturo-lang.io"
 
 valid?.email "loremIpsum@
 ; => false
+
+; we may also check for more than one strings ;-)
+valid?.email ["my@email.com", "info@google.com"]
+; => true
 ```
 
 > [!TIP]
@@ -56,7 +60,7 @@ check if given string is valid
 ##### Usage
 
 <pre>
-<b>valid?</b> <ins>str</ins> <i>:string</i>
+<b>valid?</b> <ins>str</ins> <i>:string :block</i>
 </pre>
 
 ##### Attributes
