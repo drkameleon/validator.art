@@ -37,7 +37,7 @@ import "validator"!
 valid?.url "https://arturo-lang.io"
 ; => true
 
-valid?.email "loremIpsum@
+valid?.email "loremIpsum@"
 ; => false
 ```
 
