@@ -12,21 +12,21 @@ on:
       - '*.md'
       - 'LICENSE'
 
-defaults:
-  run:
-    shell: bash -l {0}
-
 jobs:  
   build:
-    name: "Build & Test"
+    name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os:
-            - ubuntu-latest       # Linux - amd64
-            - macos-12            # macOS - amd64
-            - macos-latest        # macOS - arm64/M1
-            - windows-latest      # Windows - amd64
+        include:
+            - {name: "Linux (amd64)",   os: ubuntu-latest,  shell: bash}       
+            - {name: "macOS (amd64)",   os: macos-12,       shell: bash}       
+            - {name: "macOS (arm64)",   os: macos-latest,   shell: bash}       
+            - {name: "Windows (amd64)", os: windows-latest, shell: "msys2 {0}"}
+    
+    defaults:
+        run:
+            shell: ${{ matrix.shell }}
     steps:
       - name: "Cancel similar actions in progress"
         uses: styfle/cancel-workflow-action@0.6.0
