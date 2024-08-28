@@ -27,10 +27,24 @@ test: #[
     valid: [
         "drkameleon@gmail.com"
         "yaniszaf@gmail.com"
+        "test@website.com"
+        "test.sth@website.com"
+        "test.sth.else+now@website.com"
+        "test-more@domain.com"
+        "test@and-more.co.uk"
+        "test-me@now.fr"
+        "123456789andonemoretest@domain.com"
     ]
 
     invalid: [
         "drkameleongmail.com"
         "foobar"
+        "user@"
+        "@domain.com"
+        "user#domain.com"
+        "user..@domain.com"
+        "test.sth.com"
+        "test(sth\"very)weird]com"
+        "test\"quotes\"instring.com"
     ]
 ]
