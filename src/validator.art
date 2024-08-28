@@ -32,11 +32,17 @@ export module [
     ; Public methods
     ;---------------------------
 
-    valid?: method.public [str :string][
+    valid?: method.public [strs :string :block][
+        inputs: (string? strs)? -> @[strs][
+            ensure -> is? [:string] strs
+            strs
+        ]
         loop \plugins [name, plugin][
             if attr name [
-                unless do [ return plugin\action str ] ->
-                    return false
+                loop inputs 'str [
+                    unless do [ plugin\action str ] ->
+                        return false
+                ]
             ]
         ]
         return true
