@@ -42,5 +42,3 @@ export module [
         return true
     ]
 ]!
-
-print valid?.email "yaniszafgmail.com"
