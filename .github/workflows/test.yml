@@ -45,7 +45,5 @@ jobs:
 
       - name: Run unit tests
         run: |
-          pwd
-          ls
           arturo -v
           arturo tests/tests.art
