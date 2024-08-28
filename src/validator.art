@@ -32,7 +32,7 @@ export module [
     ; Public methods
     ;---------------------------
 
-    valid?: method.public [strs :string :block][
+    valid?: method.public [str :string :block][
         ;; description: « check if given string is valid
         ;; options: [
         ;;      email: « verify e-mail address
@@ -49,15 +49,14 @@ export module [
         ;;      valid?.email ["my@email.com", "info@google.com"]
         ;;      ; => true
         ;; }
-        
-        inputs: (string? strs)? -> @[strs][
-            ensure -> is? [:string] strs
-            strs
+        inputs: (string? str)? -> @[str][
+            ensure -> is? [:string] str
+            str
         ]
         loop \plugins [name, plugin][
             if attr name [
-                loop inputs 'str [
-                    unless do [ plugin\action str ] ->
+                loop inputs 'inp [
+                    unless do [ plugin\action inp ] ->
                         return false
                 ]
             ]
