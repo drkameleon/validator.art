@@ -33,6 +33,23 @@ export module [
     ;---------------------------
 
     valid?: method.public [strs :string :block][
+        ;; description: « check if given string is valid
+        ;; options: [
+        ;;      email: « verify e-mail address
+        ;;      url: « verify URL
+        ;; ]
+        ;; returns: :logical
+        ;; example: {
+        ;;      valid?.url "https://arturo-lang.io"
+        ;;      ; => true
+        ;;
+        ;;      valid?.email "loremIpsum@
+        ;;      ; => false
+        ;;
+        ;;      valid?.email ["my@email.com", "info@google.com"]
+        ;;      ; => true
+        ;; }
+        
         inputs: (string? strs)? -> @[strs][
             ensure -> is? [:string] strs
             strs
