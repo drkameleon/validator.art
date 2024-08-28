@@ -49,7 +49,7 @@ valid?.email ["my@email.com", "info@google.com"]
 ```
 
 > [!TIP]
-> Different type of checks may accept different extra params, so you'd better have a look into the reference first! :)
+> Different type of checks may accept different extra params, so you'd better have a look into the reference first! 😉
 
 
 ### Function reference
