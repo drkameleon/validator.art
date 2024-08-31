@@ -3,8 +3,8 @@ import {unitt}!
 loop list ./"../src/plugins" 'location [
     name: extract.filename location
     plugin: # location
-
-    run: [do [plugin\action v]]
+    params: #[]
+    run: [do [plugin\action v params]]
     
     suite capitalize name [
         test "valid" [
