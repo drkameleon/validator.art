@@ -29,6 +29,25 @@ export module [
     ]
 
     ;---------------------------
+    ; Private methods
+    ;---------------------------
+
+    fetchParams: method [usedParams :dictionary][
+        res: #[]
+
+        loop usedParams [pname, pspec][
+            switch pval: <= attr pname [
+                ensure -> is? pspec\0 pval
+                res\[pname]: pval
+            ][
+                res\[pname]: pspec\1
+            ]
+        ]
+
+        return res
+    ]
+
+    ;---------------------------
     ; Public methods
     ;---------------------------
 
@@ -55,16 +74,7 @@ export module [
         ]
         loop \plugins [name, plugin][
             if attr name [
-                prms: #[]
-
-                loop plugin\params [pname, pspec][
-                    switch pval: <= attr pname [
-                        ensure -> is? pspec\0 pval
-                        prms\[pname]: pval
-                    ][
-                        prms\[pname]: pspec\1
-                    ]
-                ]
+                prms: \fetchParams plugin\params
 
                 loop inputs 'inp [
                     unless do [ plugin\action inp prms ] ->
