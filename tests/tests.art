@@ -1,5 +1,38 @@
 import {unitt}!
 
+import ./"../src/validator.art"!
+
+subHeader: function [hdr][
+    color.bold #green 
+        ("-------------------------------------\n") ++
+        ("| " ++ hdr ++ "\n") ++
+        ("-------------------------------------\n")
+]
+
+print subHeader "Misc. Tests"
+
+suite "Test function calls" [
+    test "single param" [
+        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
+        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
+        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
+        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
+        assert -> not? valid?.url ["google", "arturolang"]
+        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
+    ]
+
+    test "multiple params" [
+        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
+        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
+        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
+        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
+        assert -> not? valid?.url ["google", "arturolang"]
+        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
+    ]
+]
+
+print subHeader "Plugin validation"
+
 loop list ./"../src/plugins" 'location [
     name: extract.filename location
     plugin: # location
@@ -21,36 +54,16 @@ loop list ./"../src/plugins" 'location [
         do [plugin\action val passedParams]
     ]
     
-    suite capitalize name [
-        test.static ~{all |size plugin\test\valid| positive checks are valid} [
+    suite color.bold #cyan capitalize name [
+        valids: @ plugin\test\valid
+        test.static ~{all |size valids| positive checks are valid} [
             assert ->
-                every? plugin\test\valid 'v run
+                every? valids 'v run
         ]
-        test.static ~{all |size plugin\test\invalid| negative checks are invalid} [
+        invalids: @ plugin\test\invalid
+        test.static ~{all |size invalids| negative checks are invalid} [
             assert ->
-                not? some? plugin\test\invalid 'v run
+                not? some? invalids 'v run
         ]
-    ]
-]
-
-import ./"../src/validator.art"!
-
-suite "Test function calls" [
-    test "single param" [
-        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
-        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
-        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
-        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
-        assert -> not? valid?.url ["google", "arturolang"]
-        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
-    ]
-
-    test "multiple params" [
-        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
-        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
-        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
-        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
-        assert -> not? valid?.url ["google", "arturolang"]
-        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
     ]
 ]
