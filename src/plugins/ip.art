@@ -1,0 +1,40 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; IP address validation plugin
+;
+; @file: src/plugins/ip.art
+;==========================================================
+
+;------------------
+; parameters
+;------------------
+params: []
+
+;------------------
+; main action
+;------------------
+action: function [str][
+    ; For the regex, see:
+    ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isIP.js
+    
+]
+
+;------------------
+; tests
+;------------------
+test: #[
+    valid: [
+        
+    ]
+
+    invalid: [
+        
+    ]
+]
