@@ -23,7 +23,7 @@ params: []
 ;------------------
 ; main action
 ;------------------
-action: function [str][
+action: function [str, params][
     ; For the regex, see:
     ; https://stackoverflow.com/a/201378
     match? str

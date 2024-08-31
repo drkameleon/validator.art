@@ -20,7 +20,7 @@ params: []
 ;------------------
 ; main action
 ;------------------
-action: function [str][
+action: function [str, params][
     ; For the regex, see:
     ; https://gist.github.com/davidhartsough/a125b5cef0721880e034e16b8899b842
     match? str
