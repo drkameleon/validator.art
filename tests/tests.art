@@ -22,11 +22,11 @@ loop list ./"../src/plugins" 'location [
     ]
     
     suite capitalize name [
-        test.static "valid" [
+        test.static ~{all |size plugin\test\valid| positive checks are valid} [
             assert ->
                 every? plugin\test\valid 'v run
         ]
-        test.static "invalid" [
+        test.static ~{all |size plugin\test\invalid| negative checks are invalid} [
             assert ->
                 not? some? plugin\test\invalid 'v run
         ]
