@@ -71,6 +71,7 @@ check if given string is valid
 | Option | Description |
 |----|----|
 | email | verify e-mail address | 
+| ip | verify IP addresses |
 | url | verify URL |
 
 ##### Returns
