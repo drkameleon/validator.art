@@ -3,10 +3,9 @@ import {unitt}!
 import ./"../src/validator.art"!
 
 subHeader: function [hdr][
-    color.bold #green 
-        ("-------------------------------------\n") ++
-        ("| " ++ hdr ++ "\n") ++
-        ("-------------------------------------\n")
+    (color.bold #green  "-------------------------------------\n") ++
+    (color.bold #green "| " ++ hdr ++ "\n") ++
+    (color.bold #green "-------------------------------------\n")
 ]
 
 print subHeader "Misc. Tests"
