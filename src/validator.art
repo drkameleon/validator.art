@@ -35,14 +35,15 @@ export module [
     fetchParams: method [usedParams :dictionary][
         res: #[]
 
-        loop usedParams [pname, pspec][
-            switch pval: <= attr pname [
-                ensure -> is? pspec\0 pval
-                res\[pname]: pval
-            ][
-                res\[pname]: pspec\1
+        unless empty? usedParams ->
+            loop usedParams [pname, pspec][
+                switch pval: <= attr pname [
+                    ensure -> is? pspec\0 pval
+                    res\[pname]: pval
+                ][
+                    res\[pname]: pspec\1
+                ]
             ]
-        ]
 
         return res
     ]
@@ -75,7 +76,6 @@ export module [
         loop \plugins [name, plugin][
             if attr name [
                 prms: \fetchParams plugin\params
-
                 loop inputs 'inp [
                     unless do [ plugin\action inp prms ] ->
                         return false
