@@ -4,14 +4,29 @@ loop list ./"../src/plugins" 'location [
     name: extract.filename location
     plugin: # location
     params: #[]
-    run: [do [plugin\action v params]]
+
+    loop plugin\params [nm,prm][
+        params\[nm]: prm\1
+    ]
+
+    run: [
+        passedParams: new params
+        val: new v
+        if block? v [
+            val: new v\0
+            loop v\1 [nm,prm][
+                passedParams\[nm]: prm
+            ]
+        ]
+        do [plugin\action val passedParams]
+    ]
     
     suite capitalize name [
-        test "valid" [
+        test.static "valid" [
             assert ->
                 every? plugin\test\valid 'v run
         ]
-        test "invalid" [
+        test.static "invalid" [
             assert ->
                 not? some? plugin\test\invalid 'v run
         ]
@@ -22,10 +37,12 @@ import ./"../src/validator.art"!
 
 suite "Test function calls" [
     test "single param" [
-        assert -> valid?.email "drkameleon@gmail.com"
-        assert -> valid?.url "https://arturo-lang.io"
-        assert -> not? valid?.email "drkameleon"
-        assert -> not? valid?.url "arturolang"
+        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
+        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
+        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
+        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
+        assert -> not? valid?.url ["google", "arturolang"]
+        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
     ]
 
     test "multiple params" [
