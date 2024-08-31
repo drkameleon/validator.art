@@ -68,11 +68,13 @@ check if given string is valid
 
 ##### Attributes
 
-| Option | Description |
-|----|----|
-| email | verify e-mail address | 
-| ip | verify IP addresses |
-| url | verify URL |
+| Option | Related parameters | Description |
+|----|----|----|
+| email | | verify e-mail address | 
+| ip | | verify IP addresses |
+| | .v4 | look for IPv4 addresses only |
+| | .v6 | look for IPv6 addresses only |
+| url | | verify URL |
 
 ##### Returns
 
