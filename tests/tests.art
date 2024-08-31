@@ -3,6 +3,7 @@ import {unitt}!
 import ./"../src/validator.art"!
 
 subHeader: function [hdr][
+    "\n" ++
     (color.bold #green  "-------------------------------------\n") ++
     (color.bold #green "| " ++ hdr ++ "\n") ++
     (color.bold #green "-------------------------------------\n")
