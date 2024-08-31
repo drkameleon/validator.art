@@ -55,8 +55,19 @@ export module [
         ]
         loop \plugins [name, plugin][
             if attr name [
+                prms: #[]
+
+                loop plugin\params [pname, pspec][
+                    switch pval: <= attr pname [
+                        ensure -> is? pspec\0 pval
+                        prms\[pname]: pval
+                    ][
+                        prms\[pname]: pspec\1
+                    ]
+                ]
+
                 loop inputs 'inp [
-                    unless do [ plugin\action inp ] ->
+                    unless do [ plugin\action inp prms ] ->
                         return false
                 ]
             ]
