@@ -24,7 +24,7 @@ action: function [str, params][
     ; based on our own `to` converter
     ; and catching possible errors with `throws?`
     not? throws? [
-        _: to :integer str
+        _: to :floating str
     ]
 ]
 
@@ -34,13 +34,12 @@ action: function [str, params][
 test: #[
     valid: [
         "12"
-        "1234"
-        "1234567890"
+        "12.34"
+        "12345.67890"
     ]
 
     invalid: [
         ""
-        "1.5"
         "three"
         "%$#@^#$"
     ]
