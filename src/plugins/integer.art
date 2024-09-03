@@ -21,7 +21,9 @@ params: #[]
 ; main action
 ;------------------
 action: function [str, params][
-    
+    not? throws? [
+        _: to :integer str
+    ]
 ]
 
 ;------------------
