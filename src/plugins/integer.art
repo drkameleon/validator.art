@@ -1,0 +1,40 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; Integer validation plugin
+;
+; @file: src/plugins/integerl.art
+;==========================================================
+
+;------------------
+; parameters
+;------------------
+params: #[]
+
+;------------------
+; main action
+;------------------
+action: function [str, params][
+    
+]
+
+;------------------
+; tests
+;------------------
+test: #[
+    valid: [
+        "12"
+        "1234"
+        "1234567890"
+    ]
+
+    invalid: [
+    
+    ]
+]
