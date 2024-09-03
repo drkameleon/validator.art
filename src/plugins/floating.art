@@ -1,0 +1,47 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; Floating validation plugin
+;
+; @file: src/plugins/floating.art
+;==========================================================
+
+;------------------
+; parameters
+;------------------
+params: #[]
+
+;------------------
+; main action
+;------------------
+action: function [str, params][
+    ; based on our own `to` converter
+    ; and catching possible errors with `throws?`
+    not? throws? [
+        _: to :integer str
+    ]
+]
+
+;------------------
+; tests
+;------------------
+test: #[
+    valid: [
+        "12"
+        "1234"
+        "1234567890"
+    ]
+
+    invalid: [
+        ""
+        "1.5"
+        "three"
+        "%$#@^#$"
+    ]
+]
