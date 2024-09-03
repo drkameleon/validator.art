@@ -71,6 +71,7 @@ check if given string is valid
 | Option | Related parameters | Description |
 |----|----|----|
 | email | | verify e-mail address | 
+| floating | | test if string contains a parsable floating-point value |
 | integer | | test if string contains a parsable integer value |
 | ip | | verify IP addresses |
 | | .v4 | look for IPv4 addresses only |
