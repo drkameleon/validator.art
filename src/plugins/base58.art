@@ -32,10 +32,16 @@ action: function [str, params][
 ;------------------
 test: #[
     valid: [
-
+        "AbCdEfGH"
+        "1234567890"
+        "16EiHXyy6VtL3z6VSjkmfuqpfAKDyekA93"
+        "5K6CcnN9FauX6oE3dHgqk6JjpXgDvGP7iySR8jEvfJELTgweikh"
     ]
 
     invalid: [
-        
+        ""
+        "*&*#@&^#*&@^#"
+        "ABCDEFGHJO"
+        "16EiHXyy 6VtL3z6V Sjkmfuqpf AKDyekA93"
     ]
 ]
