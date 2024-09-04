@@ -24,7 +24,7 @@ action: function [str, params][
     ; See:
     ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase58.js
     match? str
-           {/^[A-HJ-NP-Za-km-z1-9]*$/}
+           {/^[A-HJ-NP-Za-km-z1-9]+$/}
 ]
 
 ;------------------
@@ -33,7 +33,7 @@ action: function [str, params][
 test: #[
     valid: [
         "AbCdEfGH"
-        "1234567890"
+        "123456789"
         "16EiHXyy6VtL3z6VSjkmfuqpfAKDyekA93"
         "5K6CcnN9FauX6oE3dHgqk6JjpXgDvGP7iySR8jEvfJELTgweikh"
     ]
