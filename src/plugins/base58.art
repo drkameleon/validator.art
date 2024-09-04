@@ -1,0 +1,41 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; Base-58 validation plugin
+;
+; @file: src/plugins/integer.art
+;==========================================================
+
+;------------------
+; parameters
+;------------------
+params: #[]
+
+;------------------
+; main action
+;------------------
+action: function [str, params][
+    ; See:
+    ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase58.js
+    match? str
+           {/^[A-HJ-NP-Za-km-z1-9]*$/}
+]
+
+;------------------
+; tests
+;------------------
+test: #[
+    valid: [
+
+    ]
+
+    invalid: [
+        
+    ]
+]
