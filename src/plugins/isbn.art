@@ -31,6 +31,7 @@ action: function [str, params][
     ] -> return false
 
     isIsbn10?: function [isbn][
+        ; see: https://en.wikipedia.org/wiki/ISBN#ISBN-10_check_digit_calculation
         if 10 <> size isbn -> return false
         [s, t]: 0
         loop 0..9 'i [
@@ -41,6 +42,7 @@ action: function [str, params][
     ]
 
     isIsbn13?: function [isbn][
+        ; see: https://rosettacode.org/wiki/ISBN13_check_digit#Arturo
         if 13 <> size isbn -> return false
         s: 0
         loop.with:'i isbn 'n [
