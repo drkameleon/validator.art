@@ -15,7 +15,10 @@
 ;------------------
 ; parameters
 ;------------------
-params: #[]
+params: #[
+    "10": @[:logical, false]
+    "13": @[:logical, false]
+]
 
 ;------------------
 ; main action
@@ -45,6 +48,9 @@ action: function [str, params][
         ]
         return zero? s % 10
     ]
+
+    if params\["10"] -> return isIsbn10? sanitized
+    if params\["13"] -> return isIsbn13? sanitized
 
     return or? [isIsbn13? sanitized][isIsbn10? sanitized]
 ]
