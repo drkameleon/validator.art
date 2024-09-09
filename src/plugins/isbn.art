@@ -1,0 +1,37 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; ISBN validation plugin
+;
+; @file: src/plugins/isbn.art
+;==========================================================
+
+;------------------
+; parameters
+;------------------
+params: #[]
+
+;------------------
+; main action
+;------------------
+action: function [str, params][
+]
+
+;------------------
+; tests
+;------------------
+test: #[
+    valid: [
+        
+    ]
+
+    invalid: [
+        
+    ]
+]
