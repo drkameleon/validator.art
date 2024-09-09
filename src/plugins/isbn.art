@@ -21,6 +21,32 @@ params: #[]
 ; main action
 ;------------------
 action: function [str, params][
+    sanitized: []
+
+    if throws? [
+        sanitized: to [:integer] split replace str {/[\s-]+/} ""
+    ] -> return false
+
+    isIsbn10?: function [isbn][
+        if 10 <> size isbn -> return false
+        [s, t]: 0
+        loop 0..9 'i [
+            t: t + isbn\[i]
+            s: s + t
+        ]
+        return zero? s % 11
+    ]
+
+    isIsbn13?: function [isbn][
+        if 13 <> size isbn -> return false
+        s: 0
+        loop.with:'i isbn 'n [
+            s: s + (even? i)? -> n -> 3*n
+        ]
+        return zero? s % 10
+    ]
+
+    return or? [isIsbn13? sanitized][isIsbn10? sanitized]
 ]
 
 ;------------------
@@ -28,10 +54,15 @@ action: function [str, params][
 ;------------------
 test: #[
     valid: [
-        
+        "0306406152"
+        "0-306-40615-2"
+        "9780596528126"
+        "978-0596528126"
     ]
 
     invalid: [
-        
+        "askdjashd"
+        "0306777152"
+        "978-0596528199"
     ]
 ]
