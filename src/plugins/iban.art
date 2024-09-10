@@ -1,0 +1,36 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; IBAN validation plugin
+;
+; @file: src/plugins/iban.art
+;==========================================================
+
+;------------------
+; parameters
+;------------------
+params: #[]
+
+;------------------
+; main action
+;------------------
+action: function [str, params][
+
+]
+
+;------------------
+; tests
+;------------------
+test: #[
+    valid: [
+    ]
+
+    invalid: [
+    ]
+]
