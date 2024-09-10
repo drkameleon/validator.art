@@ -9,6 +9,9 @@
 ;==========================================================
 ; IBAN validation plugin
 ;
+; based on:
+; https://en.wikipedia.org/wiki/International_Bank_Account_Number
+;
 ; @file: src/plugins/iban.art
 ;==========================================================
 
@@ -21,6 +24,8 @@ params: #[]
 ; main action
 ;------------------
 action: function [str, params][
+    ; for the regexes, see:
+    ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isIBAN.js
 
 ]
 
