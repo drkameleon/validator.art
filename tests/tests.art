@@ -51,7 +51,7 @@ loop sort list ./"../src/plugins" 'location [
                 passedParams\[nm]: prm
             ]
         ]
-        do [plugin\action val passedParams]
+        do [plugin\action val passedParams plugin\data]
     ]
     
     suite color.bold #cyan capitalize name [
