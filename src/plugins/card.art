@@ -63,7 +63,6 @@ action: function [str, params, data][
     ]
 
     sanitized: join split replace str {/[\s]+/} ""
-    print sanitized
 
     unless some? values data\emitters 'rx [
         match? sanitized rx
