@@ -78,7 +78,7 @@ export module [
             if attr name [
                 prms: \fetchParams plugin\params
                 loop inputs 'inp [
-                    unless do [ plugin\action inp prms ] ->
+                    unless do [ plugin\action inp prms plugin\data ] ->
                         return false
                 ]
             ]

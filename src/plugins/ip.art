@@ -21,9 +21,14 @@ params: #[
 ]
 
 ;------------------
+; built-in data
+;------------------
+data: #[]
+
+;------------------
 ; main action
 ;------------------
-action: function [str, params][
+action: function [str, params, data][
     ; For the regexes, see:
     ; https://stackoverflow.com/a/36760050/1270812
     ; https://stackoverflow.com/a/17871737/1270812

@@ -21,9 +21,14 @@
 params: #[]
 
 ;------------------
+; built-in data
+;------------------
+data: #[]
+
+;------------------
 ; main action
 ;------------------
-action: function [str, params][
+action: function [str, params, data][
     ; for the regexes, see:
     ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isIBAN.js
 

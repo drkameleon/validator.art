@@ -18,9 +18,14 @@
 params: #[]
 
 ;------------------
+; built-in data
+;------------------
+data: #[]
+
+;------------------
 ; main action
 ;------------------
-action: function [str, params][
+action: function [str, params, data][
     ; For the regex, see:
     ; https://gist.github.com/davidhartsough/a125b5cef0721880e034e16b8899b842
     match? str

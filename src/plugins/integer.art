@@ -18,9 +18,14 @@
 params: #[]
 
 ;------------------
+; built-in data
+;------------------
+data: #[]
+
+;------------------
 ; main action
 ;------------------
-action: function [str, params][
+action: function [str, params, data][
     ; based on our own `to` converter
     ; and catching possible errors with `throws?`
     not? throws? [
