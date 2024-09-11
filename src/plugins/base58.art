@@ -30,7 +30,7 @@ data: #[
 ; main action
 ;------------------
 action: function [str, params, data][
-    match? str isBase58
+    match? str data\isBase58
 ]
 
 ;------------------
