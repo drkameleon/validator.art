@@ -111,14 +111,12 @@ action: function [str, params][
     ]
 
     sanitized: join split replace str {/[\s-]+/} ""
-    if throws? [
-        countryCode: upper first.n:2 sanitized
-        unless key? countries countryCode -> return false
+    countryCode: upper first.n:2 sanitized
+    
+    unless key? countries countryCode -> return false
+    rx: countries\[countryCode]
 
-        rx: countries\[countryCode]
-        unless match? sanitized rx -> return false
-
-    ] -> return false
+    unless match? sanitized rx -> return false
     
     return true
 ]
