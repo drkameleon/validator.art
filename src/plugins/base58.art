@@ -20,16 +20,17 @@ params: #[]
 ;------------------
 ; built-in data
 ;------------------
-data: #[]
+data: #[
+    ; See:
+    ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase58.js
+    isBase58: {/^[A-HJ-NP-Za-km-z1-9]+$/}
+]
 
 ;------------------
 ; main action
 ;------------------
 action: function [str, params, data][
-    ; See:
-    ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase58.js
-    match? str
-           {/^[A-HJ-NP-Za-km-z1-9]+$/}
+    match? str isBase58
 ]
 
 ;------------------
