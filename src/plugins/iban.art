@@ -130,5 +130,6 @@ test: #[
     ]
 
     invalid: [
+        "US64SVBKUS6S3300958879"
     ]
 ]
