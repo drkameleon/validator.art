@@ -20,16 +20,17 @@ params: #[]
 ;------------------
 ; built-in data
 ;------------------
-data: #[]
+data: #[
+    ; For the regex, see:
+    ; https://gist.github.com/davidhartsough/a125b5cef0721880e034e16b8899b842
+    isUrl: {/^(https?:\/\/)((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}(\/[^\s]*)?$/}
+]
 
 ;------------------
 ; main action
 ;------------------
 action: function [str, params, data][
-    ; For the regex, see:
-    ; https://gist.github.com/davidhartsough/a125b5cef0721880e034e16b8899b842
-    match? str
-           {/^(https?:\/\/)((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}(\/[^\s]*)?$/}
+    match? str data\isUrl
 ]
 
 ;------------------
