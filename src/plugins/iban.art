@@ -127,9 +127,16 @@ action: function [str, params][
 test: #[
     valid: [
         "GB33BUKB20201555555555"
+        "GB94BARC10201530093459"
     ]
 
-    invalid: [
-        "US64SVBKUS6S3300958879"
+    invalid: [ 
+        ""                              ; empty
+        "JKFDS*&^F&*DSF"                ; gibberish
+        "US64SVBKUS6S3300958879"        ; unsupported country
+        "GB12BARC20201530093A59"        ; invalid structure
+        "GB96BARC2020153009345"         ; shorter
+        "GB96BARC202015300934591"       ; longer
+        "GB01BARC20714583608387"        ; invalid checksum
     ]
 ]
