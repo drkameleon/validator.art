@@ -110,7 +110,7 @@ action: function [str, params][
         XK: {/^(XK[0-9]{2})\d{16}$/}
     ]
 
-    sanitized: split replace str {/[\s-]+/} ""
+    sanitized: join split replace str {/[\s-]+/} ""
     if throws? [
         countryCode: upper first.n:2 sanitized
         unless key? countries countryCode -> return false
