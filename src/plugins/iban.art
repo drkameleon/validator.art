@@ -128,6 +128,7 @@ action: function [str, params][
 ;------------------
 test: #[
     valid: [
+        "GB33BUKB20201555555555"
     ]
 
     invalid: [
