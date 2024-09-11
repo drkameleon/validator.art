@@ -111,7 +111,7 @@ action: function [str, params][
         VG: {/^(VG[0-9]{2})[A-Z]{4}\d{16}$/}
         XK: {/^(XK[0-9]{2})\d{16}$/}
     ]
-    print str
+
     sanitized: join split replace str {/[\s-]+/} ""
     countryCode: upper first.n:2 sanitized
     
@@ -127,16 +127,10 @@ action: function [str, params][
     base36: (map 0..9 'x -> to :string x) ++ 
              map 97..122 'x -> upper to :string to :char x
 
-    ;print sanitized
     iban: (slice sanitized 4 (size sanitized)-1) ++ slice sanitized 0 3
-    ;print iban
     iban: join map split iban 'ch -> to :string index base36 ch
-    ;print iban
     iban: to :integer iban
-    ;inspect iban
-    ;print iban % 97
 
-    ;print one? iban % 97
     return one? iban % 97
 ]
 
