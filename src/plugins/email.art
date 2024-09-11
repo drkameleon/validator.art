@@ -33,7 +33,7 @@ data: #[
 ; main action
 ;------------------
 action: function [str, params, data][
-    match? str isEmail
+    match? str data\isEmail
 ]
 
 ;------------------
