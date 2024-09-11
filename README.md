@@ -71,6 +71,7 @@ check if given string is valid
 | Option | Related parameters | Description |
 |----|----|----|
 | base58 | | check base-58 encoding |
+| card | | check credit card number |
 | email | | verify e-mail address | 
 | floating | | test if string contains a parsable floating-point value |
 | integer | | test if string contains a parsable integer value |
