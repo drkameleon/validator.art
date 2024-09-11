@@ -23,12 +23,7 @@ params: #[]
 ;------------------
 ; built-in data
 ;------------------
-data: #[]
-
-;------------------
-; main action
-;------------------
-action: function [str, params, data][
+data: #[
     ; for the regexes, see:
     ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isIBAN.js
 
@@ -117,11 +112,20 @@ action: function [str, params, data][
         XK: {/^(XK[0-9]{2})\d{16}$/}
     ]
 
+    ; for use in the checksum validation
+    base36: (map 0..9 'x -> to :string x) ++ 
+             map 97..122 'x -> upper to :string to :char x
+]
+
+;------------------
+; main action
+;------------------
+action: function [str, params, data][
     sanitized: join split replace str {/[\s-]+/} ""
     countryCode: upper first.n:2 sanitized
     
-    unless key? countries countryCode -> return false
-    rx: countries\[countryCode]
+    unless key? data\countries countryCode -> return false
+    rx: data\countries\[countryCode]
 
     unless match? sanitized rx -> return false
 
@@ -129,11 +133,8 @@ action: function [str, params, data][
     ; see also:
     ; https://github.com/arturo-lang/arturo/blob/master/examples/rosetta/iban.art#L17-L27
 
-    base36: (map 0..9 'x -> to :string x) ++ 
-             map 97..122 'x -> upper to :string to :char x
-
     iban: (slice sanitized 4 (size sanitized)-1) ++ slice sanitized 0 3
-    iban: join map split iban 'ch -> to :string index base36 ch
+    iban: join map split iban 'ch -> to :string index data\base36 ch
     iban: to :integer iban
 
     return one? iban % 97
