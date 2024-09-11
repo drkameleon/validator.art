@@ -44,27 +44,31 @@ data: #[
 action: function [str, params, data][
     luhn?: function [n][
         ; see:
-        ; https://github.com/arturo-lang/arturo/blob/master/examples/rosetta/luhn%20test%20of%20credit%20card%20numbers.art
-        s1: 0
-        s2: 0
-        loop.with: 'i digits n 'd [
-            (even? i)? [
-                's1 + d 
+        ; https://en.wikipedia.org/wiki/Luhn_algorithm
+        s: 0
+        ds: digits n
+        parity: (size ds) % 2
+        loop.with:'i chop ds 'd [
+            switch parity <> i % 2 [
+                s: s + d
             ][
-                'd * 2
-                if d > 9 -> 'd - 9
-                's2 + d
+                switch d > 4 [
+                    s: s + (2 * d) - 9
+                ][
+                    s: s + 2 * d
+                ]
             ]
         ]
-        zero? (s1 + s2) % 10
+        return (last ds) = (10 - s % 10) % 10
     ]
 
     sanitized: join split replace str {/[\s]+/} ""
+    print sanitized
 
     unless some? values data\emitters 'rx [
         match? sanitized rx
     ] -> return false
-    
+
     return luhn? to :integer sanitized
 ]
 
