@@ -1,0 +1,80 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; Credit card validation plugin
+;
+; based on:
+; https://en.wikipedia.org/wiki/International_Bank_Account_Number
+;
+; @file: src/plugins/card.art
+;==========================================================
+
+;------------------
+; parameters
+;------------------
+params: #[]
+
+;------------------
+; built-in data
+;------------------
+data: #[
+    ; for the regexes, see:
+    ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isCreditCard.js
+
+    emitters: #[
+        amex:       {/^3[47][0-9]{13}$/}
+        diners:     {/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/}
+        discover:   {/^6(?:011|5[0-9][0-9])[0-9]{12,15}$/}
+        jcb:        {/^(?:2131|1800|35\d{3})\d{11}$/}
+        mastercard: {/^5[1-5][0-9]{2}|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/}
+        union:      {/^(6[27][0-9]{14}|^(81[0-9]{14,17}))$/}
+        visa:       {/^(?:4[0-9]{12})(?:[0-9]{3,6})?$/}
+    ]
+]
+
+;------------------
+; main action
+;------------------
+action: function [str, params, data][
+    luhn?: function [n][
+        ; see:
+        ; https://github.com/arturo-lang/arturo/blob/master/examples/rosetta/luhn%20test%20of%20credit%20card%20numbers.art
+        s1: 0
+        s2: 0
+        loop.with: 'i digits n 'd [
+            (even? i)? [
+                's1 + d 
+            ][
+                'd * 2
+                if d > 9 -> 'd - 9
+                's2 + d
+            ]
+        ]
+        zero? (s1 + s2) % 10
+    ]
+
+    sanitized: join split replace str {/[\s]+/} ""
+
+    unless some? values data\emitters 'rx [
+        match? sanitized rx
+    ] -> return false
+    
+    return luhn? to :integer sanitized
+]
+
+;------------------
+; tests
+;------------------
+test: #[
+    valid: [
+    ]
+
+    invalid: [ 
+    ]
+]
