@@ -33,7 +33,7 @@ suite "Test function calls" [
 
 print subHeader "Plugin validation"
 
-loop list ./"../src/plugins" 'location [
+loop sort list ./"../src/plugins" 'location [
     name: extract.filename location
     plugin: # location
     params: #[]
