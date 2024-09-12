@@ -75,6 +75,12 @@ export module [
     ; Public methods
     ;---------------------------
 
+    _validators: method.public [][
+        ; meant to be used 
+        ; mainly by the unit-tests
+        return \validators
+    ]
+
     valid?: method.public [str :string :block][
         ;; description: « check if given string is valid
         ;; options: [
