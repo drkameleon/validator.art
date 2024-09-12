@@ -12,40 +12,34 @@
 ; @file: src/plugins/floating.art
 ;==========================================================
 
-;------------------
-; parameters
-;------------------
-params: #[]
 
-;------------------
-; built-in data
-;------------------
-data: #[]
+define :floatingValidator is :validator [
 
-;------------------
-; main action
-;------------------
-action: function [str, params, data][
-    ; based on our own `to` converter
-    ; and catching possible errors with `throws?`
-    not? throws? [
-        _: to :floating str
-    ]
-]
+    ;------------------
+    ; methods
+    ;------------------
 
-;------------------
-; tests
-;------------------
-test: #[
-    valid: [
-        "12"
-        "12.34"
-        "12345.67890"
+    action: function [str, opts][
+        ; based on our own `to` converter
+        ; and catching possible errors with `throws?`
+        not? throws? [
+            _: to :floating str
+        ]
     ]
 
-    invalid: [
-        ""
-        "three"
-        "%$#@^#$"
+    test: method [][
+        #[
+            valid: [
+                "12"
+                "12.34"
+                "12345.67890"
+            ]
+
+            invalid: [
+                ""
+                "three"
+                "%$#@^#$"
+            ]
+        ]
     ]
 ]

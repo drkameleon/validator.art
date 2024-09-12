@@ -12,42 +12,39 @@
 ; @file: src/plugins/base58.art
 ;==========================================================
 
-;------------------
-; parameters
-;------------------
-params: #[]
+define :base58Validator is :validator [
 
-;------------------
-; built-in data
-;------------------
-data: #[
-    ; See:
-    ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase58.js
-    isBase58: {/^[A-HJ-NP-Za-km-z1-9]+$/}
-]
+    ;------------------
+    ; built-in data
+    ;------------------
 
-;------------------
-; main action
-;------------------
-action: function [str, params, data][
-    match? str data\isBase58
-]
+    isBase58: {/^[A-HJ-NP-Za-km-z1-9]+$/}               ; See:
+                                                        ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase58.js
 
-;------------------
-; tests
-;------------------
-test: #[
-    valid: [
-        "AbCdEfGH"
-        "123456789"
-        "16EiHXyy6VtL3z6VSjkmfuqpfAKDyekA93"
-        "5K6CcnN9FauX6oE3dHgqk6JjpXgDvGP7iySR8jEvfJELTgweikh"
+
+    ;------------------
+    ; methods
+    ;------------------                                          
+
+    action: method [str, opts][
+        match? str \isBase58
     ]
 
-    invalid: [
-        ""
-        "*&*#@&^#*&@^#"
-        "ABCDEFGHJO"
-        "16EiHXyy 6VtL3z6V Sjkmfuqpf AKDyekA93"
+    test: method [][
+        #[
+            valid: [
+                "AbCdEfGH"
+                "123456789"
+                "16EiHXyy6VtL3z6VSjkmfuqpfAKDyekA93"
+                "5K6CcnN9FauX6oE3dHgqk6JjpXgDvGP7iySR8jEvfJELTgweikh"
+            ]
+
+            invalid: [
+                ""
+                "*&*#@&^#*&@^#"
+                "ABCDEFGHJO"
+                "16EiHXyy 6VtL3z6V Sjkmfuqpf AKDyekA93"
+            ]
+        ]
     ]
 ]

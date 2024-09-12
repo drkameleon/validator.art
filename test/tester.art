@@ -35,7 +35,8 @@ print subHeader "Plugin validation"
 
 loop sort list ./"../src/plugins" 'location [
     name: extract.filename location
-    plugin: # location
+    do location
+    plugin: to to :type ~"|name|Validator" []!
     params: #[]
 
     loop plugin\params [nm,prm][
@@ -51,16 +52,18 @@ loop sort list ./"../src/plugins" 'location [
                 passedParams\[nm]: prm
             ]
         ]
-        do [plugin\action val passedParams plugin\data]
+        do [plugin\action val passedParams]
     ]
-    
+
+    tests: plugin\test
+
     suite color.bold #cyan capitalize name [
-        valids: @ plugin\test\valid
+        valids: @ tests\valid
         test.static ~{all |size valids| positive checks are valid} [
             assert ->
                 every? valids 'v run
         ]
-        invalids: @ plugin\test\invalid
+        invalids: @ tests\invalid
         test.static ~{all |size invalids| negative checks are invalid} [
             assert ->
                 not? some? invalids 'v run

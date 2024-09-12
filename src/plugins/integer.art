@@ -12,41 +12,34 @@
 ; @file: src/plugins/integer.art
 ;==========================================================
 
-;------------------
-; parameters
-;------------------
-params: #[]
+define :integerValidator is :validator [
 
-;------------------
-; built-in data
-;------------------
-data: #[]
+    ;------------------
+    ; methods
+    ;------------------
 
-;------------------
-; main action
-;------------------
-action: function [str, params, data][
-    ; based on our own `to` converter
-    ; and catching possible errors with `throws?`
-    not? throws? [
-        _: to :integer str
-    ]
-]
-
-;------------------
-; tests
-;------------------
-test: #[
-    valid: [
-        "12"
-        "1234"
-        "1234567890"
+    action: method [str, opts][
+        ; based on our own `to` converter
+        ; and catching possible errors with `throws?`
+        not? throws? [
+            _: to :integer str
+        ]
     ]
 
-    invalid: [
-        ""
-        "1.5"
-        "three"
-        "%$#@^#$"
+    test: method [][
+        #[
+            valid: [
+                "12"
+                "1234"
+                "1234567890"
+            ]
+
+            invalid: [
+                ""
+                "1.5"
+                "three"
+                "%$#@^#$"
+            ]
+        ]
     ]
 ]

@@ -10,6 +10,28 @@
 ; @file: src/validator.art
 ;==========================================================
 
+;---------------------------
+; The main type
+;---------------------------
+
+define :validator [
+    ; data
+    params: #[]
+
+    ; methods
+    action: method [str, opts][
+        panic "Validator should define its own action"
+    ]
+
+    test: method [][
+        panic "Validator should include its own unit-tests"
+    ]
+]
+
+;---------------------------
+; The main module
+;---------------------------
+
 export module [
     ;---------------------------
     ; Private variables
@@ -24,7 +46,8 @@ export module [
     init: method [][
         loop list ./"plugins" 'plugin [
             name: extract.filename plugin
-            \plugins\[name]: # plugin
+            do plugin
+            \plugins\[name]: to to :type ~"|name|Validator" []!
         ]
     ]
 
@@ -76,9 +99,9 @@ export module [
         ]
         loop \plugins [name, plugin][
             if attr name [
-                prms: \fetchParams plugin\params
+                options: \fetchParams plugin\params
                 loop inputs 'inp [
-                    unless do [ plugin\action inp prms plugin\data ] ->
+                    unless do [ plugin\action inp options ] ->
                         return false
                 ]
             ]

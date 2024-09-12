@@ -12,28 +12,20 @@
 ; @file: src/plugins/isbn.art
 ;==========================================================
 
-;------------------
-; parameters
-;------------------
-params: #[
-    "10": @[:logical, false]
-    "13": @[:logical, false]
-]
+define :isbnValidator is :validator [
+    
+    ;------------------
+    ; parameters
+    ;------------------
 
-;------------------
-; built-in data
-;------------------
-data: #[]
+    params: #[
+        "10": @[:logical, false]
+        "13": @[:logical, false]
+    ]
 
-;------------------
-; main action
-;------------------
-action: function [str, params, data][
-    sanitized: []
-
-    if throws? [
-        sanitized: to [:integer] split replace str {/[\s-]+/} ""
-    ] -> return false
+    ;------------------
+    ; helpers
+    ;------------------
 
     isIsbn10?: function [isbn][
         ; see: https://en.wikipedia.org/wiki/ISBN#ISBN-10_check_digit_calculation
@@ -56,32 +48,43 @@ action: function [str, params, data][
         return zero? s % 10
     ]
 
-    if params\["10"] -> return isIsbn10? sanitized
-    if params\["13"] -> return isIsbn13? sanitized
+    ;------------------
+    ; methods
+    ;------------------
 
-    return or? [isIsbn13? sanitized][isIsbn10? sanitized]
-]
+    action: method [str, opts][
+        sanitized: []
 
-;------------------
-; tests
-;------------------
-test: #[
-    valid: [
-        "0306406152"
-        "0-306-40615-2"
-        "9780596528126"
-        "978-0596528126"
+        if throws? [
+            sanitized: to [:integer] split replace str {/[\s-]+/} ""
+        ] -> return false
 
-        ["0306406152"       ["10": true]]
-        ["978-0596528126"   ["13": true]]
+        if opts\["10"] -> return \isIsbn10? sanitized
+        if opts\["13"] -> return \isIsbn13? sanitized
+
+        return or? [\isIsbn13? sanitized][\isIsbn10? sanitized]
     ]
 
-    invalid: [
-        "askdjashd"
-        "0306777152"
-        "978-0596528199"
+    test: method [][
+        #[
+            valid: [
+                "0306406152"
+                "0-306-40615-2"
+                "9780596528126"
+                "978-0596528126"
 
-        ["0306406152"       ["13": true]]
-        ["978-0596528126"   ["10": true]]
+                ["0306406152"       ["10": true]]
+                ["978-0596528126"   ["13": true]]
+            ]
+
+            invalid: [
+                "askdjashd"
+                "0306777152"
+                "978-0596528199"
+
+                ["0306406152"       ["13": true]]
+                ["978-0596528126"   ["10": true]]
+            ]
+        ]
     ]
 ]

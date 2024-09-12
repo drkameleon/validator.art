@@ -12,120 +12,117 @@
 ; @file: src/plugins/url.art
 ;==========================================================
 
-;------------------
-; parameters
-;------------------
-params: #[]
+define :urlValidator is :validator [
 
-;------------------
-; built-in data
-;------------------
-data: #[
+    ;------------------
+    ; built-in data
+    ;------------------
+
     ; For the regex, see:
     ; https://gist.github.com/davidhartsough/a125b5cef0721880e034e16b8899b842
     isUrl: {/^(https?:\/\/)((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}(\/[^\s]*)?$/}
-]
 
-;------------------
-; main action
-;------------------
-action: function [str, params, data][
-    match? str data\isUrl
-]
+    ;------------------
+    ; methods
+    ;------------------
 
-;------------------
-; tests
-;------------------
-test: #[
-    valid: [
-        "https://arturo-lang.io"
-        "https://www.example.com/"
-        "http://www.example.com/"
-        "https://example.com/"
-        "http://example.com/"
-        "https://www.example.com"
-        "http://www.example.com"
-        "https://example.com"
-        "http://example.com"
-        "http://foo.com/blah_blah"
-        "http://foo.com/blah_blah/"
-        "http://foo.com/blah_blah_(wikipedia)"
-        "http://foo.com/blah_blah_(wikipedia)_(again)"
-        "http://www.example.com/wpstyle/?p=364"
-        "https://www.example.com/foo/?bar=baz&inga=42&quux"
-        "http://foo.com/blah_(wikipedia)#cite-1"
-        "http://foo.com/blah_(wikipedia)_blah#cite-1"
-        "http://foo.com/(something)?after=parens"
-        "http://example.example.com/example/#&example=example"
-        "http://j.mp"
-        "http://foo.bar/?q=Test%20URL-encoded%20stuff"
-        "http://a.b-c.de"
-        "https://www.example.com/example"
-        "https://example.com/example"
-        "https://example.com/example/example/example"
-        "https://example-example.example-example.com/example-example/"
-        "https://example.example.com/example/example/0/#example"
-        "https://example.com/example?example=example"
-        "https://unpkg.com/example@1.0.0/example/example-example.html"
-        "https://example.example.com/example/0/example-example"
-        "https://www.example.com/index.html"
-        "https://example.com/u/Example-Example"
-        "https://example.com/example_example.php?example=example"
+    action: method [str, opts][
+        match? str \isUrl
     ]
 
-    invalid: [
-        "drkameleon@gmail.com"
-        "arturolangio"
-        "https:// arturo-lang.io"
-        "http://"
-        "http://."
-        "http://.."
-        "http://../"
-        "http://?"
-        "http://??"
-        "http://??/"
-        "http://#"
-        "http://##"
-        "http://##/"
-        "http://foo.bar?q=Spaces should be encoded"
-        "//"
-        "//a"
-        "///a"
-        "///"
-        "http:///a"
-        "foo.com"
-        "rdar://1234"
-        "h://test"
-        "http:// shouldfail.com"
-        ":// should fail"
-        "http://foo.bar/foo(bar)baz quux"
-        "ftps://foo.bar/"
-        "http://-error-.invalid/"
-        "http://a.b--c.de/"
-        "http://-a.b.co"
-        "http://a.b-.co"
-        "http://.www.foo.bar/"
-        "http://www.foo.bar./"
-        "http://.www.foo.bar./"
-        "http://0.0.0.0"
-        "http://10.1.1.0"
-        "http://10.1.1.255"
-        "http://224.1.1.1"
-        "http://1.1.1.1.1"
-        "http://123.123.123"
-        "http://3628126748"
-        "http://10.1.1.1"
-        "http://10.1.1.254"
-        "http://userid:password@example.com:8080"
-        "http://userid:password@example.com:8080/"
-        "http://userid@example.com"
-        "http://userid@example.com/"
-        "http://userid@example.com:8080"
-        "http://userid@example.com:8080/"
-        "http://userid:password@example.com"
-        "http://userid:password@example.com/"
-        "http://142.42.1.1/"
-        "http://142.42.1.1:8080/"
-        "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com"
+    test: method [][
+        #[
+            valid: [
+                "https://arturo-lang.io"
+                "https://www.example.com/"
+                "http://www.example.com/"
+                "https://example.com/"
+                "http://example.com/"
+                "https://www.example.com"
+                "http://www.example.com"
+                "https://example.com"
+                "http://example.com"
+                "http://foo.com/blah_blah"
+                "http://foo.com/blah_blah/"
+                "http://foo.com/blah_blah_(wikipedia)"
+                "http://foo.com/blah_blah_(wikipedia)_(again)"
+                "http://www.example.com/wpstyle/?p=364"
+                "https://www.example.com/foo/?bar=baz&inga=42&quux"
+                "http://foo.com/blah_(wikipedia)#cite-1"
+                "http://foo.com/blah_(wikipedia)_blah#cite-1"
+                "http://foo.com/(something)?after=parens"
+                "http://example.example.com/example/#&example=example"
+                "http://j.mp"
+                "http://foo.bar/?q=Test%20URL-encoded%20stuff"
+                "http://a.b-c.de"
+                "https://www.example.com/example"
+                "https://example.com/example"
+                "https://example.com/example/example/example"
+                "https://example-example.example-example.com/example-example/"
+                "https://example.example.com/example/example/0/#example"
+                "https://example.com/example?example=example"
+                "https://unpkg.com/example@1.0.0/example/example-example.html"
+                "https://example.example.com/example/0/example-example"
+                "https://www.example.com/index.html"
+                "https://example.com/u/Example-Example"
+                "https://example.com/example_example.php?example=example"
+            ]
+
+            invalid: [
+                "drkameleon@gmail.com"
+                "arturolangio"
+                "https:// arturo-lang.io"
+                "http://"
+                "http://."
+                "http://.."
+                "http://../"
+                "http://?"
+                "http://??"
+                "http://??/"
+                "http://#"
+                "http://##"
+                "http://##/"
+                "http://foo.bar?q=Spaces should be encoded"
+                "//"
+                "//a"
+                "///a"
+                "///"
+                "http:///a"
+                "foo.com"
+                "rdar://1234"
+                "h://test"
+                "http:// shouldfail.com"
+                ":// should fail"
+                "http://foo.bar/foo(bar)baz quux"
+                "ftps://foo.bar/"
+                "http://-error-.invalid/"
+                "http://a.b--c.de/"
+                "http://-a.b.co"
+                "http://a.b-.co"
+                "http://.www.foo.bar/"
+                "http://www.foo.bar./"
+                "http://.www.foo.bar./"
+                "http://0.0.0.0"
+                "http://10.1.1.0"
+                "http://10.1.1.255"
+                "http://224.1.1.1"
+                "http://1.1.1.1.1"
+                "http://123.123.123"
+                "http://3628126748"
+                "http://10.1.1.1"
+                "http://10.1.1.254"
+                "http://userid:password@example.com:8080"
+                "http://userid:password@example.com:8080/"
+                "http://userid@example.com"
+                "http://userid@example.com/"
+                "http://userid@example.com:8080"
+                "http://userid@example.com:8080/"
+                "http://userid:password@example.com"
+                "http://userid:password@example.com/"
+                "http://142.42.1.1/"
+                "http://142.42.1.1:8080/"
+                "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com"
+            ]
+        ]
     ]
 ]
