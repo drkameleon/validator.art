@@ -97,7 +97,7 @@ Validator.art has been designed with flexibility and extensibility in mind.
 - Do you want to add more tests to a given validator to make it more robust?
 - Do you want to add a new one (Have a look into the [sample validator](docs/sample.art)!)
 
-You are 100% welcome! Just make a PR and I'll be more than glad to merge it! :wink
+You are 100% welcome! Just make a PR and I'll be more than glad to merge it! :wink:
 
 <hr/>
 
