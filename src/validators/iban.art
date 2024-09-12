@@ -7,7 +7,7 @@
 ; MIT License
 ; (c) 2024 Yanis Zafirópulos
 ;==========================================================
-; IBAN validation plugin
+; IBAN validation
 ;
 ; based on:
 ; https://en.wikipedia.org/wiki/International_Bank_Account_Number

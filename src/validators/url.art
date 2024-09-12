@@ -7,7 +7,7 @@
 ; MIT License
 ; (c) 2024 Yanis Zafirópulos
 ;==========================================================
-; URL validation plugin
+; URL validation
 ;
 ; @file: src/plugins/url.art
 ;==========================================================

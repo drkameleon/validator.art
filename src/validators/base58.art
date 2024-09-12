@@ -7,7 +7,7 @@
 ; MIT License
 ; (c) 2024 Yanis Zafirópulos
 ;==========================================================
-; Base-58 validation plugin
+; Base-58 validation
 ;
 ; @file: src/plugins/base58.art
 ;==========================================================

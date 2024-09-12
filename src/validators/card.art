@@ -7,7 +7,7 @@
 ; MIT License
 ; (c) 2024 Yanis Zafirópulos
 ;==========================================================
-; Credit card validation plugin
+; Credit card validation
 ;
 ; based on:
 ; https://en.wikipedia.org/wiki/International_Bank_Account_Number
