@@ -1,5 +1,4 @@
 import {unitt}!
-
 import ./"../src/validator.art"!
 
 subHeader: function [hdr][
@@ -33,10 +32,7 @@ suite "Test function calls" [
 
 print subHeader "Test validators"
 
-loop sort list ./"../src/validators" 'location [
-    name: extract.filename location
-    do location
-    validator: to to :type ~"|name|Validator" []!
+loop _validators [name, validator][
     params: #[]
 
     loop validator\params [nm,prm][
