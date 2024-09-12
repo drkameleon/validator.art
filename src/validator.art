@@ -37,17 +37,17 @@ export module [
     ; Private variables
     ;---------------------------
 
-    plugins: #[]
+    validators: #[]
 
     ;---------------------------
     ; Initialization
     ;---------------------------
 
     init: method [][
-        loop list ./"plugins" 'plugin [
-            name: extract.filename plugin
-            do plugin
-            \plugins\[name]: to to :type ~"|name|Validator" []!
+        loop list ./"validators" 'validator [
+            name: extract.filename validator
+            do validator
+            \validators\[name]: to to :type ~"|name|Validator" []!
         ]
     ]
 
@@ -97,11 +97,11 @@ export module [
             ensure -> is? [:string] str
             str
         ]
-        loop \plugins [name, plugin][
+        loop \validators [name, validator][
             if attr name [
-                options: \fetchParams plugin\params
+                options: \fetchParams validator\params
                 loop inputs 'inp [
-                    unless do [ plugin\action inp options ] ->
+                    unless do [ validator\action inp options ] ->
                         return false
                 ]
             ]
