@@ -12,7 +12,7 @@
 ; based on:
 ; https://en.wikipedia.org/wiki/International_Bank_Account_Number
 ;
-; @file: src/plugins/iban.art
+; @file: src/validators/iban.art
 ;==========================================================
 
 define :ibanValidator is :validator [
@@ -110,6 +110,7 @@ define :ibanValidator is :validator [
     ]
 
     ; for use in the checksum validation
+
     base36: (map 0..9 'x -> to :string x) ++ 
              map 97..122 'x -> upper to :string to :char x
 
@@ -255,4 +256,5 @@ define :ibanValidator is :validator [
             ]
         ]
     ]
+    
 ]

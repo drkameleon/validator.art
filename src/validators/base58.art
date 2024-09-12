@@ -9,7 +9,7 @@
 ;==========================================================
 ; Base-58 validation
 ;
-; @file: src/plugins/base58.art
+; @file: src/validators/base58.art
 ;==========================================================
 
 define :base58Validator is :validator [
@@ -20,7 +20,6 @@ define :base58Validator is :validator [
 
     isBase58: {/^[A-HJ-NP-Za-km-z1-9]+$/}               ; See:
                                                         ; https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase58.js
-
 
     ;------------------
     ; methods
@@ -47,4 +46,5 @@ define :base58Validator is :validator [
             ]
         ]
     ]
+    
 ]

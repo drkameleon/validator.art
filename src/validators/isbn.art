@@ -9,7 +9,7 @@
 ;==========================================================
 ; ISBN validation
 ;
-; @file: src/plugins/isbn.art
+; @file: src/validators/isbn.art
 ;==========================================================
 
 define :isbnValidator is :validator [
@@ -87,4 +87,5 @@ define :isbnValidator is :validator [
             ]
         ]
     ]
+    
 ]

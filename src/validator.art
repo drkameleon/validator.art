@@ -99,10 +99,12 @@ export module [
         ;;      valid?.email ["my@email.com", "info@google.com"]
         ;;      ; => true
         ;; }
+
         inputs: (string? str)? -> @[str][
             ensure -> is? [:string] str
             str
         ]
+        
         loop \validators [name, validator][
             if attr name [
                 options: \fetchParams validator\params

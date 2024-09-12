@@ -9,7 +9,7 @@
 ;==========================================================
 ; IP address validation
 ;
-; @file: src/plugins/ip.art
+; @file: src/validators/ip.art
 ;==========================================================
 
 define :ipValidator is :validator [
@@ -46,7 +46,7 @@ define :ipValidator is :validator [
     ]
 
     test: method [][
-            #[
+        #[
             valid: [
                 "1.2.3.4"
                 "0.0.0.0"
@@ -85,4 +85,5 @@ define :ipValidator is :validator [
             ]
         ]
     ]
+    
 ]

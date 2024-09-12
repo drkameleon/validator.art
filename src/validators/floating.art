@@ -9,7 +9,7 @@
 ;==========================================================
 ; Floating validation
 ;
-; @file: src/plugins/floating.art
+; @file: src/validators/floating.art
 ;==========================================================
 
 
@@ -42,4 +42,5 @@ define :floatingValidator is :validator [
             ]
         ]
     ]
+    
 ]

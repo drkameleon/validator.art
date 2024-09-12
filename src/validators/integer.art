@@ -9,7 +9,7 @@
 ;==========================================================
 ; Integer validation
 ;
-; @file: src/plugins/integer.art
+; @file: src/validators/integer.art
 ;==========================================================
 
 define :integerValidator is :validator [
@@ -42,4 +42,5 @@ define :integerValidator is :validator [
             ]
         ]
     ]
+    
 ]

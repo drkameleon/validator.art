@@ -9,7 +9,7 @@
 ;==========================================================
 ; URL validation
 ;
-; @file: src/plugins/url.art
+; @file: src/validators/url.art
 ;==========================================================
 
 define :urlValidator is :validator [
@@ -20,6 +20,7 @@ define :urlValidator is :validator [
 
     ; For the regex, see:
     ; https://gist.github.com/davidhartsough/a125b5cef0721880e034e16b8899b842
+
     isUrl: {/^(https?:\/\/)((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}(\/[^\s]*)?$/}
 
     ;------------------
@@ -125,4 +126,5 @@ define :urlValidator is :validator [
             ]
         ]
     ]
+    
 ]
