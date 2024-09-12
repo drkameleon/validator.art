@@ -1,0 +1,39 @@
+
+define :sampleValidator is :validator [
+    
+    ;------------------
+    ; parameters
+    ;------------------
+
+    ; override the `params` dictionary key
+    ; in case you want to define validator-specific params
+
+    ;------------------
+    ; built-in data
+    ;------------------
+
+    ; any private data that you want 
+    ; the validator to have access to 
+
+    ;------------------
+    ; methods
+    ;------------------                                          
+
+    action: method [str, opts][
+        ; main action
+    ]
+
+    test: method [][
+        #[
+            valid: [
+                ; here we have to add valid cases 
+                ; that will return *true* when passed to our main action
+            ]
+
+            invalid: [
+                ; here we have to add valid cases 
+                ; that will return *true* when passed to our main action
+            ]
+        ]
+    ]
+]
