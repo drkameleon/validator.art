@@ -54,10 +54,10 @@ loop sort list ./"../src/plugins" 'location [
         ]
         do [plugin\action val passedParams]
     ]
-
-    tests: plugin\test
-
+    
     suite color.bold #cyan capitalize name [
+        tests: plugin\test
+
         valids: @ tests\valid
         test.static ~{all |size valids| positive checks are valid} [
             assert ->
