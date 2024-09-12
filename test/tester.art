@@ -5,7 +5,7 @@ import ./"../src/validator.art"!
 subHeader: function [hdr][
     "\n" ++
     (color.bold #green  "-------------------------------------\n") ++
-    (color.bold #green "| " ++ hdr ++ "\n") ++
+    (color.bold #green "  " ++ hdr ++ "\n") ++
     (color.bold #green "-------------------------------------\n")
 ]
 
@@ -31,15 +31,15 @@ suite "Test function calls" [
     ]
 ]
 
-print subHeader "Plugin validation"
+print subHeader "Test validators"
 
-loop sort list ./"../src/plugins" 'location [
+loop sort list ./"../src/validators" 'location [
     name: extract.filename location
     do location
-    plugin: to to :type ~"|name|Validator" []!
+    validator: to to :type ~"|name|Validator" []!
     params: #[]
 
-    loop plugin\params [nm,prm][
+    loop validator\params [nm,prm][
         params\[nm]: prm\1
     ]
 
@@ -52,11 +52,11 @@ loop sort list ./"../src/plugins" 'location [
                 passedParams\[nm]: prm
             ]
         ]
-        do [plugin\action val passedParams]
+        do [validator\action val passedParams]
     ]
     
     suite color.bold #cyan capitalize name [
-        tests: plugin\test
+        tests: validator\test
 
         valids: @ tests\valid
         test.static ~{all |size valids| positive checks are valid} [
