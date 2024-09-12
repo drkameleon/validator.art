@@ -17,6 +17,7 @@
 * [What does this package do?](#what-does-this-package-do)
 * [How do I use it?](#how-do-i-use-it)
 * [Function Reference](#function-reference)
+* [Contributing](#contributing)
 * [License](#license)   
 
 <!--te-->
@@ -87,6 +88,16 @@ check if given string is valid
 ##### Returns
 
 - *:logical*
+
+### Contributing
+
+Validator.art has been designed with flexibility and extensibility in mind.
+
+- Have you noticed an error and want to fix sth?
+- Do you want to add more tests to a given validator to make it more robust?
+- Do you want to add a new one (Have a look into the [sample validator](docs/sample.art)!)
+
+You are 100% welcome! Just make a PR and I'll be more than glad to merge it! :wink
 
 <hr/>
 
