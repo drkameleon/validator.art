@@ -40,6 +40,15 @@ valid?.url "https://arturo-lang.io"
 
 valid?.email "loremIpsum@"
 ; => false
+
+valid?.iban "GB82 WEST 1234 5698 7654 32"
+; => true
+
+valid?.ip "127.0.0.1"
+; => true
+
+valid?.ip.v6 "127.0.0.1"
+; => false
 ```
 
 And we may also check more than one strings:
