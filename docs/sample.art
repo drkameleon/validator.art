@@ -31,8 +31,8 @@ define :sampleValidator is :validator [
             ]
 
             invalid: [
-                ; here we have to add valid cases 
-                ; that will return *true* when passed to our main action
+                ; here we have to add invalid cases 
+                ; that will return *false* when passed to our main action
             ]
         ]
     ]
