@@ -1,0 +1,43 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; Version validation
+;
+; @file: src/validators/version.art
+;==========================================================
+
+define :versionValidator is :validator [
+
+    ;------------------
+    ; methods
+    ;------------------
+
+    action: method [str, opts][
+        ; this test is due to the fact that
+        ; sth like `1.2` would crash, instead
+        ; of throwing an error
+        unless 2 = enumerate str => [& = '.']
+            -> return false
+
+        not? throws? [
+            _: to :version str
+        ]
+    ]
+
+    test: method [][
+        #[
+            valid: [
+            ]
+
+            invalid: [
+            ]
+        ]
+    ]
+    
+]
