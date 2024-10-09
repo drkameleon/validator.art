@@ -20,7 +20,7 @@ jobs:
       matrix:
         include:
             - {name: "Linux (amd64)",   os: ubuntu-latest,  shell: bash}       
-            - {name: "macOS (amd64)",   os: macos-12,       shell: bash}       
+            - {name: "macOS (amd64)",   os: macos-13,       shell: bash}       
             - {name: "macOS (arm64)",   os: macos-latest,   shell: bash}       
             - {name: "Windows (amd64)", os: windows-latest, shell: "msys2 {0}"}
     
