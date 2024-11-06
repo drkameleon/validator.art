@@ -83,7 +83,7 @@ check if given string is valid
 | base58 | | check base-58 encoding |
 | card | | check credit card number |
 | date | | test if string contains valid date |
-| | .format: | specify date format (default: `'iso` or `yyyy-MM-dd`) - could also be one of `'iso8601`, `'short`, `'long` or any given string) |
+| | .format: | specify date format (default: `'iso` or `yyyy-MM-dd`) - could also be one of `'iso8601`, `'short`, `'long` or any given string |
 | email | | verify e-mail address | 
 | floating | | test if string contains a parsable floating-point value |
 | integer | | test if string contains a parsable integer value |
