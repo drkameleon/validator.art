@@ -78,7 +78,7 @@ export module [
     _validators: method.public [][
         ; meant to be used 
         ; mainly by the unit-tests
-        return \validators
+        return sort \validators
     ]
 
     valid?: method.public [str :string :block][
