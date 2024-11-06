@@ -1,0 +1,116 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; JSON validation
+;
+; @file: src/validators/json.art
+;==========================================================
+
+define :jsonValidator is :validator [
+    
+    ;------------------
+    ; parameters
+    ;------------------
+
+    params: #[
+        strict: @[:logical, false]     ; enforce stricter validation
+    ]
+
+    ;------------------
+    ; methods
+    ;------------------
+
+    action: function [str, opts][
+        ; use Arturo's built-in JSON parser 
+        ; and catch any potential errors
+        parsed: ø
+        if throws? [
+            parsed: read.json str
+        ] -> return false
+
+        ; if strict mode is enabled, also verify
+        ; the converted object matches the original when
+        ; converted back to JSON
+        if opts\strict [
+            original: strip str
+            converted: strip write.compact.json ø parsed
+            return original = converted
+        ]
+        
+        return true
+    ]
+
+    test: method [][
+        #[
+            valid: [
+                ; simple values
+                "null"
+                "true"
+                "false"
+                "123"
+                "3.14"
+                "\"hello\""
+                
+                ; arrays
+                "[]"
+                "[1,2,3]"
+                "[\"a\",\"b\",\"c\"]"
+                
+                ; objects
+                "{}"
+                "{\"name\":\"John\"}"
+                "{\"age\":30,\"city\":\"London\"}"
+                
+                ; nested structures
+                "{\"users\":[{\"id\":1},{\"id\":2}]}"
+                "[{\"x\":1},{\"y\":2}]"
+
+                ; with whitespace
+                "  {  }  "
+                "{\n  \"key\": \"value\"\n}"
+
+                ; ; strict mode examples
+                ["123"                      [strict: true]]
+                ["true"                     [strict: true]]
+                ["null"                     [strict: true]]
+                ["\"hello\""                [strict: true]]   
+                ["{\"x\":1}"                [strict: true]]
+                ["[1,2,3]"                  [strict: true]]
+                ["{\"arr\":[1,null,true]}"  [strict: true]]
+            ]
+
+            invalid: [
+                ; empty string
+                ""
+                
+                ; invalid syntax
+                "{"
+                "}"
+                "["
+                "]"
+                "{name:\"John\"}"           ; missing quotes around key
+                "{\"items\":}"              ; missing value
+                "{'key':'value'}"           ; single quotes
+                
+                ; invalid values
+                "undefined"
+                "NaN"
+                "Infinity"
+                
+                ; malformed structures
+                "{[}]"
+                "[1,2}}}"
+                
+                ; strict mode failures
+                ["{\"x\": 1 }"            [strict: true]]   ; extra spaces
+                ["[1, 2, 3]"              [strict: true]]   ; spaces after commas
+            ]
+        ]
+    ]
+]
