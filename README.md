@@ -95,6 +95,7 @@ check if given string is valid
 | | .10 | check for ISBN-10 codes only |
 | | .13 | check for ISBN-13 codes only |
 | json | | test if string contains valid JSON |
+| | .strict | enforce stricter, two-way validation |
 | url | | verify URL |
 
 ##### Returns
