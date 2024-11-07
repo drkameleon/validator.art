@@ -9,9 +9,6 @@
 ;==========================================================
 ; Credit card validation
 ;
-; based on:
-; https://en.wikipedia.org/wiki/International_Bank_Account_Number
-;
 ; @file: src/validators/card.art
 ;==========================================================
 
