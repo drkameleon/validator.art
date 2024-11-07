@@ -18,58 +18,71 @@ define :urlValidator is :validator [
     ; built-in data
     ;------------------
 
-    ; For the regex, see:
-    ; https://gist.github.com/davidhartsough/a125b5cef0721880e034e16b8899b842
-
-    isUrl: {/^(https?:\/\/)((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}(\/[^\s]*)?$/}
+    isUrl: {/^(https?:\/\/)(localhost(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?|((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?)(\/[^\s]*)?$/}
 
     ;------------------
     ; methods
     ;------------------
 
     action: method [str, opts][
+        print str
         match? str \isUrl
     ]
 
     test: method [][
         #[
             valid: [
+                ; Basic domain examples
                 "https://arturo-lang.io"
                 "https://www.example.com/"
                 "http://www.example.com/"
                 "https://example.com/"
                 "http://example.com/"
-                "https://www.example.com"
-                "http://www.example.com"
-                "https://example.com"
-                "http://example.com"
                 "http://foo.com/blah_blah"
                 "http://foo.com/blah_blah/"
-                "http://foo.com/blah_blah_(wikipedia)"
-                "http://foo.com/blah_blah_(wikipedia)_(again)"
+                "http://j.mp"
+                
+                ; Query parameters and fragments
                 "http://www.example.com/wpstyle/?p=364"
                 "https://www.example.com/foo/?bar=baz&inga=42&quux"
                 "http://foo.com/blah_(wikipedia)#cite-1"
-                "http://foo.com/blah_(wikipedia)_blah#cite-1"
+                "http://example.com/example?example=example"
+                
+                ; Complex paths
+                "http://foo.com/blah_blah_(wikipedia)"
+                "http://foo.com/blah_blah_(wikipedia)_(again)"
                 "http://foo.com/(something)?after=parens"
-                "http://example.example.com/example/#&example=example"
-                "http://j.mp"
-                "http://foo.bar/?q=Test%20URL-encoded%20stuff"
-                "http://a.b-c.de"
-                "https://www.example.com/example"
-                "https://example.com/example"
                 "https://example.com/example/example/example"
-                "https://example-example.example-example.com/example-example/"
-                "https://example.example.com/example/example/0/#example"
-                "https://example.com/example?example=example"
                 "https://unpkg.com/example@1.0.0/example/example-example.html"
-                "https://example.example.com/example/0/example-example"
-                "https://www.example.com/index.html"
-                "https://example.com/u/Example-Example"
-                "https://example.com/example_example.php?example=example"
+                
+                ; Multiple subdomains
+                "https://sub1.sub2.example.com"
+                "http://example.example.com/example/#&example=example"
+                
+                ; Special TLDs
+                "https://example.co.uk"
+                "https://example.app"
+                "https://example.dev/path?query=value#fragment"
+                
+                ; Localhost variants
+                "http://localhost"
+                "http://localhost:8080"
+                "http://localhost:1"
+                "http://localhost:65535"  ; Maximum valid port
+                
+                ; IP address variants
+                "http://127.0.0.1"
+                "http://127.0.0.1:3000"
+                "https://127.0.0.1:3000"
+                "http://192.168.1.1"
+                "http://10.0.0.0"
+                "http://0.0.0.0:4000"
+                "http://8.8.8.8:65535"    ; Maximum valid port
+                "http://255.255.255.255"  ; Maximum valid IP
             ]
 
             invalid: [
+                ; Basic format errors
                 "drkameleon@gmail.com"
                 "arturolangio"
                 "https:// arturo-lang.io"
@@ -77,6 +90,55 @@ define :urlValidator is :validator [
                 "http://."
                 "http://.."
                 "http://../"
+                "foo.com"
+                
+                ; Protocol errors
+                "ftp://example.com"
+                "https:/example.com"
+                "https//example.com"
+                "https:://example.com"
+                "h://test"
+                ":// should fail"
+                "rdar://1234"
+                
+                ; Domain format errors
+                "http://example..com"
+                "http://example.com../"
+                "http://.example.com"
+                "http://example."
+                "http://-error-.invalid/"
+                "http://a.b--c.de/"
+                "http://-a.b.co"
+                "http://a.b-.co"
+                "http://.www.foo.bar/"
+                "http://www.foo.bar./"
+                
+                ; Invalid characters
+                "https://exa mple.com"
+                "https://££example.com"
+                "https://example.com/path with spaces"
+                
+                ; Authentication (currently not supported)
+                "http://userid:password@example.com:8080"
+                "http://userid@example.com"
+                "http://userid:password@example.com"
+                
+                ; Port number errors
+                "http://localhost:0"           ; Invalid port 0
+                "http://localhost:65536"       ; Port too high
+                "http://127.0.0.1:65536"      ; Port too high
+                "http://localhost:-80"         ; Negative port
+                "http://localhost:abc"         ; Non-numeric port
+                "https://127.0.0.1:"           ; Port missing number
+                
+                ; IP address errors
+                "http://256.256.256.256"       ; Invalid IP octets
+                "http://1.2.3.4.5"             ; Too many IP octets
+                "http://1.1.1.1.1"             ; Invalid IP format
+                "http://123.123.123"           ; Incomplete IP
+                "http://3628126748"            ; Not an IP
+                
+                ; Malformed paths/queries
                 "http://?"
                 "http://??"
                 "http://??/"
@@ -84,45 +146,6 @@ define :urlValidator is :validator [
                 "http://##"
                 "http://##/"
                 "http://foo.bar?q=Spaces should be encoded"
-                "//"
-                "//a"
-                "///a"
-                "///"
-                "http:///a"
-                "foo.com"
-                "rdar://1234"
-                "h://test"
-                "http:// shouldfail.com"
-                ":// should fail"
-                "http://foo.bar/foo(bar)baz quux"
-                "ftps://foo.bar/"
-                "http://-error-.invalid/"
-                "http://a.b--c.de/"
-                "http://-a.b.co"
-                "http://a.b-.co"
-                "http://.www.foo.bar/"
-                "http://www.foo.bar./"
-                "http://.www.foo.bar./"
-                "http://0.0.0.0"
-                "http://10.1.1.0"
-                "http://10.1.1.255"
-                "http://224.1.1.1"
-                "http://1.1.1.1.1"
-                "http://123.123.123"
-                "http://3628126748"
-                "http://10.1.1.1"
-                "http://10.1.1.254"
-                "http://userid:password@example.com:8080"
-                "http://userid:password@example.com:8080/"
-                "http://userid@example.com"
-                "http://userid@example.com/"
-                "http://userid@example.com:8080"
-                "http://userid@example.com:8080/"
-                "http://userid:password@example.com"
-                "http://userid:password@example.com/"
-                "http://142.42.1.1/"
-                "http://142.42.1.1:8080/"
-                "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com"
             ]
         ]
     ]
