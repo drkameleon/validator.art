@@ -81,7 +81,7 @@ define :ibanValidator is :validator [
         MR: {/^(MR[0-9]{2})\d{23}$/}                    ; Mauritania
         MT: {/^(MT[0-9]{2})[A-Z]{4}\d{5}[A-Z0-9]{18}$/} ; Malta
         MU: {/^(MU[0-9]{2})[A-Z]{4}\d{19}[A-Z]{3}$/}    ; Mauritius
-        NI: {/^(NI[0-9]{2})[A-Z]{4}\d{24}$/}            ; Nicaragua
+        NI: {/^(NI[0-9]{2})[A-Z]{4}\d{20}$/}            ; Nicaragua
         NL: {/^(NL[0-9]{2})[A-Z]{4}\d{10}$/}            ; Netherlands
         NO: {/^(NO[0-9]{2})\d{11}$/}                    ; Norway
         OM: {/^(OM[0-9]{2})\d{19}$/}                    ; Oman
@@ -98,7 +98,6 @@ define :ibanValidator is :validator [
         SI: {/^(SI[0-9]{2})\d{15}$/}                    ; Slovenia
         SK: {/^(SK[0-9]{2})\d{20}$/}                    ; Slovakia
         SM: {/^(SM[0-9]{2})[A-Z]{1}\d{10}[A-Z0-9]{12}$/}; San Marino
-        SO: {/^(SO[0-9]{2})\d{21}$/}                    ; Somalia
         ST: {/^(ST[0-9]{2})\d{21}$/}                    ; São Tomé and Príncipe
         SV: {/^(SV[0-9]{2})[A-Z0-9]{4}\d{20}$/}         ; El Salvador
         TL: {/^(TL[0-9]{2})\d{19}$/}                    ; Timor-Leste
@@ -162,7 +161,6 @@ define :ibanValidator is :validator [
             return false
 
         ; Validate checksum
-        print [str \validateChecksum iban]
         return \validateChecksum iban
     ]
 
@@ -248,7 +246,6 @@ define :ibanValidator is :validator [
                 "SI56263300012039086"                   ; Slovenia
                 "SK3112000000198742637541"              ; Slovakia
                 "SM86U0322509800000000270100"           ; San Marino
-                "SO061000001123123456789"               ; Somalia
                 "ST23000200000289355710148"             ; São Tomé and Príncipe
                 "SV62CENR00000000000000700025"          ; El Salvador
                 "TL380080012345678910157"               ; Timor-Leste
