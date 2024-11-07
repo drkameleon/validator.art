@@ -284,6 +284,92 @@ define :ibanValidator is :validator [
 
                 "CH4550050201124153987"
                 "CH45 5005 0201 1241 5398 7"
+
+                ; One invalid IBAN per country
+                "AD1200012030200359100101"              ; Andorra - invalid checksum
+                "AE070331234567890123ABC"               ; UAE - contains invalid characters
+                "AL472121100900000002356987"            ; Albania - too short
+                "AM47212110090000002356987411"          ; Armenia - too long
+                "AT611904300234573202"                  ; Austria - incorrect checksum
+                "AZ21NABZ0000000013701001944X"          ; Azerbaijan - invalid character at end
+                "BA39129007940102849A"                  ; Bosnia - invalid character in number
+                "BE685390075470345"                     ; Belgium - too long
+                "BG80BNBG96611020345678AB"             ; Bulgaria - invalid format
+                "BH67BMAG000012991234567"              ; Bahrain - too short
+                "BR1800360305000010009795493CC"        ; Brazil - invalid check character
+                "BY13NBRB3600900000002Z00ABA0"         ; Belarus - invalid format
+                "CH930076201162385295"                 ; Switzerland - too short
+                "CR0501520200102628406600"             ; Costa Rica - too long
+                "CY170020012800000012005276"           ; Cyprus - too short
+                "CZ65080000001920001453990"            ; Czech Republic - too long
+                "DE89370400440532013099"               ; Germany - invalid checksum
+                "DK5000400440116"                      ; Denmark - too short
+                "DO28BAGR0000000121245361132A"         ; Dominican Republic - invalid char
+                "DZ400040017440100105048"              ; Algeria - too short
+                "EE38220022102014568599"               ; Estonia - too long
+                "EG38001900050000000026318000"         ; Egypt - too short
+                "ES91210004184502000513320"            ; Spain - too long
+                "FI21123456000007"                     ; Finland - too short
+                "FO62646000016316340"                  ; Faroe Islands - too long
+                "FR1420041010050500013M0260X"          ; France - invalid character
+                "GB29NWBK6016133192681"                ; UK - too short
+                "GE29NB000000010190491700"             ; Georgia - too long
+                "GI75NWBK00000000709945"               ; Gibraltar - too short
+                "GL896471000100020600"                 ; Greenland - too long
+                "GR16011012500000000123006950"         ; Greece - too long
+                "GT82TRAJ0102000000121002969A"         ; Guatemala - invalid char
+                "HR121001005186300016A"                ; Croatia - invalid char
+                "HU4211773016111110180000000A"         ; Hungary - invalid char
+                "IE29AIBK9311521234567"                ; Ireland - too short
+                "IL6201080000000999999990"             ; Israel - too long
+                "IQ98NBIQ85012345678901"               ; Iraq - too short
+                "IR58054010518002127311300A"           ; Iran - invalid char
+                "IS1401592600765455107303390"          ; Iceland - too long
+                "IT60X054281110100000012345"           ; Italy - too short
+                "JO94CBJO001000000000013100030"        ; Jordan - too short
+                "KW81CBKU000000000000123456010A"       ; Kuwait - invalid char
+                "KZ86125KZT500410010A"                 ; Kazakhstan - invalid char
+                "LB6209990000000100190122911"          ; Lebanon - too short
+                "LC55HEMM0001000100120012000230150"    ; Saint Lucia - too long
+                "LI2108810000232401"                   ; Liechtenstein - too short
+                "LT12100001110100100A"                 ; Lithuania - invalid char
+                "LU28001940064475000A"                 ; Luxembourg - invalid char
+                "LV80BANK000043519500100"              ; Latvia - too long
+                "LY830020480000201001203610"           ; Libya - too long
+                "MA6401151900000120500053492"          ; Morocco - too short
+                "MC5811222000010123456789030A"         ; Monaco - invalid char
+                "MD24AG00022510001310416800"           ; Moldova - too long
+                "ME255050000123456789510"              ; Montenegro - too long
+                "MK0725012000005898400"                ; North Macedonia - too short
+                "MR1300020001010000123456ABC"          ; Mauritania - invalid chars
+                "MT84MALT011000012345MTLCAST00"        ; Malta - too short
+                "MU17BOMM0101101030300200000MU1"       ; Mauritius - invalid chars
+                "NI79BAMC000000000000001231230"        ; Nicaragua - too long
+                "NL91ABNA041716430A"                   ; Netherlands - invalid char
+                "NO938601111794700"                    ; Norway - too long
+                "OM81018000000129912345600"            ; Oman - too long
+                "PK36SCBL000000112345670A"             ; Pakistan - invalid char
+                "PL6110901014000007121981287A"         ; Poland - invalid char
+                "PS92PALS0000000004001234567020"       ; Palestine - too long
+                "PT5000020123123456789015A"            ; Portugal - invalid char
+                "QA58DOHB00001234567890ABCDEF01"       ; Qatar - too long
+                "RO49AAAA1B3100759384000A"             ; Romania - invalid char
+                "RS3526000560100161137A"               ; Serbia - invalid char
+                "SA038000000060801016751A"             ; Saudi Arabia - invalid char
+                "SC18SSCB1101000000000000149"          ; Seychelles - too short
+                "SE45500000000583982574660"            ; Sweden - too long
+                "SI5626330001203908A"                  ; Slovenia - invalid char
+                "SK31120000001987426375410"            ; Slovakia - too long
+                "SM86U0322509800000000270100A"         ; San Marino - invalid char
+                "ST23000200000289355710148A"           ; São Tomé & Príncipe - invalid char
+                "SV62CENR0000000000000070002A"         ; El Salvador - invalid char
+                "TL38008001234567891015A"              ; Timor-Leste - invalid char
+                "TN591000603518359847883A"             ; Tunisia - invalid char
+                "TR330006100519786457841326A"          ; Turkey - invalid char
+                "UA21322313000002600723356600A"        ; Ukraine - invalid char
+                "VA5900112300001234567A"               ; Vatican City - invalid char
+                "VG96VPVG000001234567890A"             ; British Virgin Islands - invalid char
+                "XK05121201234567890A"                 ; Kosovo - invalid char
             ]
         ]
     ]
