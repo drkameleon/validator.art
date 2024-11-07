@@ -45,7 +45,7 @@ loop _validators [name, validator][
         if block? v [
             val: new v\0
             loop v\1 [nm,prm][
-                passedParams\[nm]: prm
+                passedParams\[nm]: do @[prm]
             ]
         ]
         do [validator\action val passedParams]
