@@ -27,45 +27,142 @@ define :ipValidator is :validator [
     ; built-in data
     ;------------------
 
-    ; For the regexes, see:
-    ; https://stackoverflow.com/a/36760050/1270812
-    ; https://stackoverflow.com/a/17871737/1270812
-
     isIpv4: {/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/}
-    isIpv6: {/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/}
+
+    ; Split IPv6 validation into smaller steps for better control
+    isHexDigit: {/^[0-9A-Fa-f]+$/}
+    isIPv6Segment: {/^[0-9A-Fa-f]{1,4}$/}
+
+    ;------------------
+    ; helpers
+    ;------------------
+
+    validIPv6Segment?: method [seg][
+        if empty? seg -> return true
+        if not? match? seg \isHexDigit -> return false
+        if 4 < size seg -> return false
+        return true
+    ]
+
+    validIPv6?: method [ipaddr][
+        ip: ipaddr
+
+        ; Remove zone index if present
+        if contains? ip "%" ->
+            ip: first split.by:"%" ip
+
+        ; Handle special cases
+        if in? ip ["::","::0","0::","0::0"] -> return true
+
+        ; Handle IPv4-mapped addresses
+        if contains? ip ".." -> return false  ; invalid double dot
+        if contains? ip "." [
+            ; First check if it's a valid ::ffff: prefix 
+            if not? or? [prefix? ip "::ffff:"][prefix? ip "::FFFF:"] ->
+                return false
+
+            ; Extract the IPv4 part (everything after the last :)
+            parts: split.by:":" ip
+            ipv4Part: last parts
+
+            ; Validate IPv4 part
+            if not? match? ipv4Part \isIpv4 -> return false
+            
+            ; The IPv6 part should be valid up to the ffff:
+            ipv6Part: join.with:":" chop parts
+            if not? in? ipv6Part ["::ffff", "::FFFF"] ->
+                return false
+
+            return true
+        ]
+
+        ; Check for invalid characters
+        if not? match? replace ip ":" "" \isHexDigit -> return false
+
+        ; Split into segments
+        segments: split.by:":" ip
+        
+        ; Basic validations
+        if 8 < size segments -> return false
+
+        ; Check for double colon (zero compression)
+        hasCompression?: contains? ip "::"
+
+        ; Check for multiple compressions by counting "::" occurrences
+        if 1 < size match ip {/::+/} ->  ; if we find more than one "::" pattern
+            return false
+
+        ; If we have compression, don't check empty first/last segments
+        unless hasCompression? [
+            if empty? first segments -> return false  ; leading colon
+            if empty? last segments -> return false   ; trailing colon
+        ]
+
+        ; Count empty segments (zero compression)
+        emptyCount: enumerate segments => empty?
+        if 2 < emptyCount -> return false
+        if emptyCount = 2 [
+            if not? hasCompression? -> return false
+        ]
+
+        ; Validate each segment
+        valid: true
+        loop segments 'seg [
+            if not? \validIPv6Segment? seg [
+                valid: false
+                break
+            ]
+        ]
+
+        return valid
+    ]
 
     ;------------------
     ; methods
     ;------------------
 
     action: method [str, opts][
-        if opts\v4 -> return match? str \isIpv4
-        if opts\v6 -> return match? str \isIpv6
+        ; First check if it matches the basic format
+        validIP?: false
+        if opts\v4 -> validIP?: match? str \isIpv4
+        if opts\v6 -> validIP?: \validIPv6? str
 
-        return or? [match? str \isIpv4][match? str \isIpv6]
+        if nor? opts\v4 opts\v6 -> 
+            validIP?: or? [match? str \isIpv4][\validIPv6? str]
+
+        return validIP?
     ]
 
     test: method [][
         #[
             valid: [
+                ; Valid IPv4
                 "1.2.3.4"
                 "0.0.0.0"
                 "255.255.255.255"
                 "127.0.0.1"
                 "64.233.161.147"
                 "10.0.0.0"
+
+                ; Valid IPv6
                 "2001:db8:3333:4444:5555:6666:7777:8888"
                 "2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF"
-                "::"
-                "2001:db8::"
-                "::1234:5678"
-                "2001:db8::1234:5678"
-                "2001:0db8:0001:0000:0000:0ab9:C0A8:0102"
-                "fe80::1ff:fe23:4567:890a"
-                "fe80::1ff:fe23:4567:890a%eth0"
-                "3ffe:2a00:100:7031::1"
-                "1:2:3:4:5:6:7:8"
-                "::ffff:192.0.2.128"        ; IPv4-mapped IPv6 address
+                "::"                                     ; All zeros compressed
+                "2001:db8::"                            ; Trailing zeros compressed
+                "::1234:5678"                           ; Leading zeros compressed
+                "2001:db8::1234:5678"                   ; Middle zeros compressed
+                "fe80::1ff:fe23:4567:890a"              
+                "fe80::1ff:fe23:4567:890a%eth0"         ; With zone index
+                "1:2:3:4:5:6:7:8"                       ; Full, no compression
+
+                ; IPv4-mapped IPv6 addresses
+                "::ffff:192.0.2.128"
+                "::ffff:192.168.1.1"
+                "::FFFF:192.168.1.1"                    ; Uppercase FFFF is valid
+                "::ffff:127.0.0.1"
+                "::ffff:0.0.0.0"
+                "::ffff:255.255.255.255"
+                "::ffff:192.0.2.128%eth0"               ; With zone index
 
                 ["1.2.3.4"      [v4: true]]
                 ["127.0.0.1"    [v4: true]]
@@ -75,12 +172,24 @@ define :ipValidator is :validator [
             ]
 
             invalid: [
-                "fdsfsdf"
-                "256.168.0.1"
-                "192.168.0.300"
-                "192.168.1"
-                "192.168.01.1"
-                "192.168.0.0/24"
+                "fdsfsdf"                   ; Not an IP at all
+                "256.168.0.1"               ; Invalid first octet
+                "192.168.0.300"             ; Invalid last octet
+                "192.168.1"                 ; Missing octet
+                "192.168.01.1"              ; Leading zero
+                "192.168.0.0/24"            ; CIDR notation not supported
+                "1.2.3.4.5"                 ; Too many octets
+                ".1.2.3.4"                  ; Leading dot
+                "1.2.3.4."                  ; Trailing dot
+                "1..2.3.4"                  ; Empty octet
+
+                "2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF:"       ; Trailing colon
+                ":2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF"       ; Leading colon
+                "2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF:1111"   ; Too many segments
+                ":::1"                                          ; Too many consecutive colons
+                "2001:db8::1::1"                                ; Multiple zero compressions
+                "02001:db8::"                                   ; Leading zero
+                "2001:db8::/32"                                 ; CIDR notation not supported
 
                 ["1.2.3.4"      [v6: true]]
                 ["127.0.0.1"    [v6: true]]
