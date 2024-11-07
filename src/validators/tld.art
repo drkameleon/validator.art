@@ -1,0 +1,55 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; TLD validation
+;
+; @file: src/validators/tld.art
+;==========================================================
+
+define :tldValidator is :validator [
+    
+    ;------------------
+    ; built-in data
+    ;------------------
+
+    tlds: (read.lines ./ "../data/tlds.txt") ++ [
+        ; Multi-part country TLDs
+        "co.uk" "co.jp" "co.nz" "co.za" "com.au" "com.br" "com.cn" "com.mx"
+        "com.tr" "com.sg" "com.tw" "com.hk" "com.ph" "com.my" "com.ar"
+        "org.uk" "net.uk" "edu.au" "gov.uk" "gov.au"
+    ]
+
+    ;------------------
+    ; methods
+    ;------------------
+
+    action: method [str, opts][
+        contains? \tlds lower str
+    ]
+
+    test: method [][
+        #[
+            valid: [
+                "com"
+                "co.uk"
+                "org.uk"
+                "es"
+                "de"
+            ]
+
+            invalid: [
+                ""
+                "@#@#91273"
+                "df"
+                "arturo"
+                "zaz"
+            ]
+        ]
+    ]
+]
