@@ -20,46 +20,6 @@ define :urlValidator is :validator [
 
     isUrl: {/^(https?:\/\/)(localhost(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?|((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+([a-zA-Z]{2,63})|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?)(\/[^\s]*)?$/}
 
-    ; List of valid TLDs (updated as of 2024)
-    ; This includes the most common TLDs
-    validTlds: [
-        ; Infrastructure TLDs
-        "arpa"
-
-        ; Generic TLDs
-        "com" "net" "org" "edu" "gov" "mil" "int" "info" "biz" "name" "pro"
-        
-        ; New generic TLDs
-        "xyz" "online" "site" "club" "shop" "app" "blog" "dev" "store" "tech"
-        "cloud" "digital" "space" "live" "life" "world" "email" "software"
-        "media" "news" "games" "marketing" "agency" "solutions" "network"
-        
-        ; Country code TLDs
-        "ac" "ad" "ae" "af" "ag" "ai" "al" "am" "ao" "aq" "ar" "as" "at" "au" 
-        "aw" "ax" "az" "ba" "bb" "bd" "be" "bf" "bg" "bh" "bi" "bj" "bm" "bn" 
-        "bo" "br" "bs" "bt" "bv" "bw" "by" "bz" "ca" "cc" "cd" "cf" "cg" "ch" 
-        "ci" "ck" "cl" "cm" "cn" "co" "cr" "cu" "cv" "cw" "cx" "cy" "cz" "de" 
-        "dj" "dk" "dm" "do" "dz" "ec" "ee" "eg" "er" "es" "et" "eu" "fi" "fj" 
-        "fk" "fm" "fo" "fr" "ga" "gb" "gd" "ge" "gf" "gg" "gh" "gi" "gl" "gm" 
-        "gn" "gp" "gq" "gr" "gs" "gt" "gu" "gw" "gy" "hk" "hm" "hn" "hr" "ht" 
-        "hu" "id" "ie" "il" "im" "in" "io" "iq" "ir" "is" "it" "je" "jm" "jo" 
-        "jp" "ke" "kg" "kh" "ki" "km" "kn" "kp" "kr" "kw" "ky" "kz" "la" "lb" 
-        "lc" "li" "lk" "lr" "ls" "lt" "lu" "lv" "ly" "ma" "mc" "md" "me" "mg" 
-        "mh" "mk" "ml" "mm" "mn" "mo" "mp" "mq" "mr" "ms" "mt" "mu" "mv" "mw" 
-        "mx" "my" "mz" "na" "nc" "ne" "nf" "ng" "ni" "nl" "no" "np" "nr" "nu" 
-        "nz" "om" "pa" "pe" "pf" "pg" "ph" "pk" "pl" "pm" "pn" "pr" "ps" "pt" 
-        "pw" "py" "qa" "re" "ro" "rs" "ru" "rw" "sa" "sb" "sc" "sd" "se" "sg" 
-        "sh" "si" "sj" "sk" "sl" "sm" "sn" "so" "sr" "ss" "st" "su" "sv" "sx" 
-        "sy" "sz" "tc" "td" "tf" "tg" "th" "tj" "tk" "tl" "tm" "tn" "to" "tr" 
-        "tt" "tv" "tw" "tz" "ua" "ug" "uk" "us" "uy" "uz" "va" "vc" "ve" "vg" 
-        "vi" "vn" "vu" "wf" "ws" "ye" "yt" "za" "zm" "zw"
-
-        ; Multi-part country TLDs
-        "co.uk" "co.jp" "co.nz" "co.za" "com.au" "com.br" "com.cn" "com.mx"
-        "com.tr" "com.sg" "com.tw" "com.hk" "com.ph" "com.my" "com.ar"
-        "org.uk" "net.uk" "edu.au" "gov.uk" "gov.au"
-    ]
-
     ;------------------
     ; helpers
     ;------------------
@@ -79,9 +39,8 @@ define :urlValidator is :validator [
                 ; Try multi-part TLD first
                 if (size domainParts) >= 3 [
                     possibleTld: join.with:"." @[domainParts\[(size domainParts)-2] domainParts\[(size domainParts)-1]]
-                    if contains? \validTlds possibleTld [
+                    if valid?.tld possibleTld ->
                         return possibleTld
-                    ]
                 ]
                 ; Try single-part TLD
                 return last domainParts
@@ -103,9 +62,8 @@ define :urlValidator is :validator [
         ; Then validate TLD (if it's not localhost or IP)
         tld: \getTld str
         if not? null? tld [
-            if not? contains? \validTlds tld [
+            unless valid?.tld tld ->
                 return false
-            ]
         ]
 
         return true
