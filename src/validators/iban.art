@@ -111,31 +111,57 @@ define :ibanValidator is :validator [
 
     ; for use in the checksum validation
 
-    base36: (map 0..9 'x -> to :string x) ++ 
+    base36: #.raw flatten couple 
+            (map 0..9 'x -> to :string x) ++ 
              map 97..122 'x -> upper to :string to :char x
+        @0..35
+
+    ;------------------
+    ; helpers
+    ;------------------
+
+    validateStructure: method [iban, country][
+        match? iban \countries\[country]
+    ]
+
+    validateChecksum: method [iban][
+        ; Move first 4 chars to end and convert to numeric values
+        rearranged: (slice iban 4 (size iban)-1) ++ slice iban 0 3
+
+        ; Convert letters to numbers (A=10, B=11, etc)
+        numeric: join map split rearranged 'ch -> 
+            to :string \base36\[ch]
+
+        ; Check if mod 97 equals 1
+        return one? (to :integer numeric) % 97
+    ]
 
     ;------------------
     ; methods
     ;------------------
 
     action: method [str, opts][
-        sanitized: join split replace str {/[\s-]+/} ""
-        countryCode: upper first.n:2 sanitized
+        ; Input validation
+        if empty? str -> return false
+
+        ; Sanitize input
+        iban: upper join split replace str {/[\s-]+/} ""
         
-        unless key? \countries countryCode -> return false
-        rx: \countries\[countryCode]
+        ; Basic length check (min 15, max 34)
+        unless between? size iban 15 34 -> 
+            return false
 
-        unless match? sanitized rx -> return false
+        ; Extract and validate country code
+        countryCode: first.n:2 iban
+        unless key? \countries countryCode ->
+            return false
 
-        ; checksum validation
-        ; see also:
-        ; https://github.com/arturo-lang/arturo/blob/master/examples/rosetta/iban.art#L17-L27
+        ; Validate structure against country pattern
+        unless \validateStructure iban countryCode ->
+            return false
 
-        iban: (slice sanitized 4 (size sanitized)-1) ++ slice sanitized 0 3
-        iban: join map split iban 'ch -> to :string index \base36 ch
-        iban: to :integer iban
-
-        return one? iban % 97
+        ; Validate checksum
+        return \validateChecksum iban
     ]
 
     test: method [][
