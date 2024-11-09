@@ -23,7 +23,7 @@ define :floatingValidator is :validator [
         ; based on our own `to` converter
         ; and catching possible errors with `throws?`
         not? throws? [
-            _: to :floating str
+            discard to :floating str
         ]
     ]
 

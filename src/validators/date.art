@@ -52,7 +52,7 @@ define :dateValidator is :validator [
         ; try converting to date using the format
         ; and catch any potential errors
         return not? throws? [
-            _: to :date .format:fmt str
+            discard to :date .format:fmt str
         ]
     ]
 
