@@ -1,0 +1,63 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; MD5 validation
+;
+; @file: src/validators/md5.art
+;==========================================================
+
+define :md5Validator is :validator [    
+    ;------------------
+    ; methods
+    ;------------------
+
+    action: function [str][
+        ; Check length - MD5 is always 32 characters
+        if 32 <> size str -> return false
+
+        ; Match against MD5 pattern - hexadecimal characters only
+        return match? str {/^[0-9a-fA-F]{32}$/}
+    ]
+
+    test: method [][
+        #[
+            valid: [
+                ; Valid MD5 hashes (lowercase)
+                "d41d8cd98f00b204e9800998ecf8427e"
+                "900150983cd24fb0d6963f7d28e17f72"
+                "f96b697d7cb7938d525a2f31aaf161d0"
+                
+                ; Valid MD5 hashes (uppercase)
+                "D41D8CD98F00B204E9800998ECF8427E"
+                "900150983CD24FB0D6963F7D28E17F72"
+                "F96B697D7CB7938D525A2F31AAF161D0"
+                
+                ; Valid MD5 hashes (mixed case)
+                "d41d8cd98f00b204e9800998ECF8427E"
+                "900150983cD24Fb0d6963f7d28E17f72"
+            ]
+
+            invalid: [
+                ; Wrong length
+                ""
+                "d41d8cd98f"
+                "d41d8cd98f00b204e9800998ecf8427e0"     ; 33 characters
+                
+                ; Invalid characters
+                "g41d8cd98f00b204e9800998ecf8427e"      ; contains 'g'
+                "x96b697d7cb7938d525a2f31aaf161d0"      ; contains 'x'
+                "h00150983cd24fb0d6963f7d28e17f72"      ; contains 'h'
+                
+                ; Invalid format
+                "d41d-8cd9-8f00-b204-e980-0998-ecf8"    ; with hyphens
+                "d41d8cd9 8f00b204 e9800998 ecf8427e"   ; with spaces
+            ]
+        ]
+    ]
+]
