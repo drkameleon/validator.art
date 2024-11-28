@@ -12,17 +12,21 @@
 ; @file: src/validators/md5.art
 ;==========================================================
 
-define :md5Validator is :validator [    
+define :md5Validator is :validator [
+
+    ;------------------
+    ; built-in data
+    ;------------------
+
+    isMD5: {/^[0-9a-fA-F]+$/}
+
     ;------------------
     ; methods
-    ;------------------
+    ;------------------                                          
 
-    action: function [str][
-        ; Check length - MD5 is always 32 characters
+    action: method [str, opts][
         if 32 <> size str -> return false
-
-        ; Match against MD5 pattern - hexadecimal characters only
-        return match? str {/^[0-9a-fA-F]{32}$/}
+        return match? str \isMD5
     ]
 
     test: method [][
@@ -60,4 +64,5 @@ define :md5Validator is :validator [
             ]
         ]
     ]
+    
 ]
