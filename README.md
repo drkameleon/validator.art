@@ -96,6 +96,7 @@ check if given string is valid
 | | .13 | check for ISBN-13 codes only |
 | json | | test if string contains valid JSON |
 | | .strict | enforce stricter, two-way validation |
+| md5 | | check if valid MD5 hash |
 | tld | | verify TLD (Top-Level Domain) |
 | url | | verify URL |
 
