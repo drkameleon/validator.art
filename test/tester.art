@@ -48,7 +48,10 @@ loop _validators [name, validator][
                 passedParams\[nm]: do @[prm]
             ]
         ]
-        do [validator\action val passedParams]
+        ;print [val, passedParams]                      ; uncomment to DEBUG
+        res: do [validator\action val passedParams]
+        ;print ["result:" res]                          ; uncomment to DEBUG
+        res
     ]
     
     suite color.bold #cyan capitalize name [
