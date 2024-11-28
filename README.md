@@ -97,6 +97,15 @@ check if given string is valid
 | json | | test if string contains valid JSON |
 | | .strict | enforce stricter, two-way validation |
 | md5 | | check if valid MD5 hash |
+| password | | check if given password is strong enough |
+| | .min: | minimum length (default: 8) |
+| | .max: | maximum length (default: 128) |
+| | .lower: | minimum lowercase characters (default: 1) |
+| | .upper: | minimum uppercase characters (default: 1) |
+| | .num: | minimum numeric characters (default: 1) |
+| | .special: | minimum special characters (default: 1) |
+| | .spaces | allow spaces (default: false) |
+| | .unicode | allow unicode characters (default: false) |
 | tld | | verify TLD (Top-Level Domain) |
 | url | | verify URL |
 
