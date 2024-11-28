@@ -39,7 +39,7 @@ define :jsonValidator is :validator [
         ; converted back to JSON
         if opts\strict [
             original: strip str
-            converted: strip write.compact.json ø parsed
+            converted: strip write.compact.json parsed ø
             return original = converted
         ]
         
