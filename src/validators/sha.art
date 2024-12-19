@@ -33,7 +33,11 @@ define :shaValidator is :validator [
     ;------------------
 
     params: #[
-        type: @[:literal, 'sha256]    ; default hash type
+        "1":   @[:logical, false]
+        "224": @[:logical, false]
+        "256": @[:logical, true]     ; default
+        "384": @[:logical, false]
+        "512": @[:logical, false]
     ]
 
     ;------------------
@@ -41,49 +45,53 @@ define :shaValidator is :validator [
     ;------------------
 
     action: method [str, opts][
-        unless key? \hashLengths opts\type -> return false
-        expectedLen: \hashLengths\[opts\type]
-        
-        if expectedLen <> size str -> return false
-        return match? str \isSHA
+        unless match? str \isSHA -> return false
+
+        if and? opts\["1"]   [40  = size str] -> return true
+        if and? opts\["224"] [56  = size str] -> return true
+        if and? opts\["256"] [64  = size str] -> return true
+        if and? opts\["384"] [96  = size str] -> return true
+        if and? opts\["512"] [128 = size str] -> return true
+
+        ; if no specific version requested, allow any valid SHA length
+        if contains? @[40 56 64 96 128] size str -> return true
+
+        return false
     ]
 
     test: method [][
         #[
             valid: [
                 ; SHA-1 (40 chars)
-                ["da39a3ee5e6b4b0d3255bfef95601890afd80709", [type: 'sha1]]
-                ["2fd4e1c67a2d28fced849ee1bb76e7391b93eb12", [type: 'sha1]]
+                ["da39a3ee5e6b4b0d3255bfef95601890afd80709", ["1": true]]
+                ["2fd4e1c67a2d28fced849ee1bb76e7391b93eb12", ["1": true]]
 
                 ; SHA-224 (56 chars)
-                ["d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f", [type: 'sha224]]
+                ["d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f", ["224": true]]
                 
-                ; SHA-256 (64 chars)
+                ; SHA-256 (64 chars, default)
                 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-                "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592"
+                ["d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592", ["256": true]]
 
                 ; SHA-384 (96 chars)
-                ["38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b", [type: 'sha384]]
+                ["38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b", ["384": true]]
                 
                 ; SHA-512 (128 chars)
-                ["cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e", [type: 'sha512]]
+                ["cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e", ["512": true]]
             ]
 
             invalid: [
                 ; Wrong length for type
-                ["e3b0c44298fc1c", [type: 'sha256]]
-                ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85500", [type: 'sha256]]
+                ["e3b0c44298fc1c", ["256": true]]
+                ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85500", ["256": true]]
                 
                 ; Invalid characters
-                ["g3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", [type: 'sha256]]
-                ["z7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592", [type: 'sha256]]
+                "g3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                "z7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592"
                 
                 ; Invalid format
-                ["e3b0-c442-98fc-1c14-9afb-f4c8-996f-b924", [type: 'sha256]]
-                ["e3b0c442 98fc1c14 9afbf4c8 996fb924", [type: 'sha256]]
-                
-                ; Invalid hash type
-                ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", [type: 'sha128]]
+                "e3b0-c442-98fc-1c14-9afb-f4c8-996f-b924"
+                "e3b0c442 98fc1c14 9afbf4c8 996fb924"
             ]
         ]
     ]
