@@ -7,77 +7,62 @@
 ; MIT License
 ; (c) 2024 Yanis Zafirópulos
 ;==========================================================
-; MD validation
+; MD5 validation
 ;
-; @file: src/validators/md.art
+; @file: src/validators/md5.art
 ;==========================================================
 
-define :mdValidator is :validator [
+define :md5Validator is :validator [
 
     ;------------------
     ; built-in data
     ;------------------
 
-    isMD: {/^[0-9a-fA-F]+$/}
-    
-    hashLengths: #[
-        md4: 32
-        md5: 32
-    ]
-
-    ;------------------
-    ; parameters
-    ;------------------
-
-    params: #[
-        type: @[:literal, 'md5]    ; default hash type
-    ]
+    isMD5: {/^[0-9a-fA-F]+$/}
 
     ;------------------
     ; methods
-    ;------------------
+    ;------------------                                          
 
     action: method [str, opts][
-        unless key? \hashLengths opts\type -> return false
-        
-        expectedLen: \hashLengths\[opts\type]
-        if expectedLen <> size str -> return false
-        
-        return match? str \isMD
+        if 32 <> size str -> return false
+        return match? str \isMD5
     ]
 
     test: method [][
         #[
             valid: [
-                ; MD4 hashes
-                ["31d6cfe0d16ae931b73c59d7e0c089c0", [type: 'md4]]
-                ["934AE003C5FD3E70CDA89515C7CEB021", [type: 'md4]]
-                
-                ; MD5 hashes (default)
+                ; Valid MD5 hashes (lowercase)
                 "d41d8cd98f00b204e9800998ecf8427e"
                 "900150983cd24fb0d6963f7d28e17f72"
+                "f96b697d7cb7938d525a2f31aaf161d0"
+                
+                ; Valid MD5 hashes (uppercase)
+                "D41D8CD98F00B204E9800998ECF8427E"
+                "900150983CD24FB0D6963F7D28E17F72"
                 "F96B697D7CB7938D525A2F31AAF161D0"
+                
+                ; Valid MD5 hashes (mixed case)
                 "d41d8cd98f00b204e9800998ECF8427E"
-                ["900150983cD24Fb0d6963f7d28E17f72", [type: 'md5]]
+                "900150983cD24Fb0d6963f7d28E17f72"
             ]
 
             invalid: [
                 ; Wrong length
                 ""
                 "d41d8cd98f"
-                "d41d8cd98f00b204e9800998ecf8427e0"
+                "d41d8cd98f00b204e9800998ecf8427e0"     ; 33 characters
                 
                 ; Invalid characters
-                "g41d8cd98f00b204e9800998ecf8427e"
-                "x96b697d7cb7938d525a2f31aaf161d0"
+                "g41d8cd98f00b204e9800998ecf8427e"      ; contains 'g'
+                "x96b697d7cb7938d525a2f31aaf161d0"      ; contains 'x'
+                "h00150983cd24fb0d6963f7d28e17f72"      ; contains 'h'
                 
                 ; Invalid format
-                "d41d-8cd9-8f00-b204-e980-0998-ecf8"
-                "d41d8cd9 8f00b204 e9800998 ecf8427e"
-                
-                ; Invalid hash type
-                ["d41d8cd98f00b204e9800998ecf8427e", [type: 'md6]]
+                "d41d-8cd9-8f00-b204-e980-0998-ecf8"    ; with hyphens
+                "d41d8cd9 8f00b204 e9800998 ecf8427e"   ; with spaces
             ]
         ]
     ]
+    
 ]
