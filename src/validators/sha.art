@@ -47,16 +47,12 @@ define :shaValidator is :validator [
     action: method [str, opts][
         unless match? str \isSHA -> return false
 
-        if and? opts\["1"]   [40  = size str] -> return true
-        if and? opts\["224"] [56  = size str] -> return true
-        if and? opts\["256"] [64  = size str] -> return true
-        if and? opts\["384"] [96  = size str] -> return true
-        if and? opts\["512"] [128 = size str] -> return true
-
-        ; if no specific version requested, allow any valid SHA length
-        if contains? @[40 56 64 96 128] size str -> return true
-
-        return false
+        loop keys \params 'len [
+            if and? [opts\[len]]
+                    [\hashLengths\[~"sha|len|"] = size str] -> return true
+        ]
+        
+        return some? values \hashLengths => [& = size str]
     ]
 
     test: method [][
