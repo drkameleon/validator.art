@@ -106,6 +106,12 @@ check if given string is valid
 | | .special: | minimum special characters (default: 1) |
 | | .spaces | allow spaces (default: false) |
 | | .unicode | allow unicode characters (default: false) |
+| sha | | verify SHA hash |
+| | .1 | check for SHA-1 hashes only |
+| | .224 | check for SHA-224 hashes only |
+| | .256 | check for SHA-256 hashes only (default) |
+| | .384 | check for SHA-384 hashes only |
+| | .512 | check for SHA-512 hashes only |
 | tld | | verify TLD (Top-Level Domain) |
 | url | | verify URL |
 
