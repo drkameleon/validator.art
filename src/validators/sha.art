@@ -1,0 +1,90 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2024 Yanis Zafirópulos
+;==========================================================
+; SHA hash validation
+;
+; @file: src/validators/sha.art
+;==========================================================
+
+define :shaValidator is :validator [
+
+    ;------------------
+    ; built-in data
+    ;------------------
+
+    isSHA: {/^[0-9a-fA-F]+$/}
+    
+    hashLengths: #[
+        sha1:   40
+        sha224: 56
+        sha256: 64
+        sha384: 96
+        sha512: 128
+    ]
+
+    ;------------------
+    ; parameters
+    ;------------------
+
+    params: #[
+        type: @[:literal, 'sha256]    ; default hash type
+    ]
+
+    ;------------------
+    ; methods
+    ;------------------
+
+    action: method [str, opts][
+        unless key? \hashLengths opts\type -> return false
+        expectedLen: \hashLengths\[opts\type]
+        
+        if expectedLen <> size str -> return false
+        return match? str \isSHA
+    ]
+
+    test: method [][
+        #[
+            valid: [
+                ; SHA-1 (40 chars)
+                ["da39a3ee5e6b4b0d3255bfef95601890afd80709", [type: 'sha1]]
+                ["2fd4e1c67a2d28fced849ee1bb76e7391b93eb12", [type: 'sha1]]
+
+                ; SHA-224 (56 chars)
+                ["d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f", [type: 'sha224]]
+                
+                ; SHA-256 (64 chars)
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592"
+
+                ; SHA-384 (96 chars)
+                ["38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b", [type: 'sha384]]
+                
+                ; SHA-512 (128 chars)
+                ["cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e", [type: 'sha512]]
+            ]
+
+            invalid: [
+                ; Wrong length for type
+                ["e3b0c44298fc1c", [type: 'sha256]]
+                ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85500", [type: 'sha256]]
+                
+                ; Invalid characters
+                ["g3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", [type: 'sha256]]
+                ["z7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592", [type: 'sha256]]
+                
+                ; Invalid format
+                ["e3b0-c442-98fc-1c14-9afb-f4c8-996f-b924", [type: 'sha256]]
+                ["e3b0c442 98fc1c14 9afbf4c8 996fb924", [type: 'sha256]]
+                
+                ; Invalid hash type
+                ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", [type: 'sha128]]
+            ]
+        ]
+    ]
+]
