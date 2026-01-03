@@ -135,7 +135,7 @@ You are 100% welcome! Just make a PR and I'll be more than glad to merge it! �
 
 MIT License
 
-Copyright (c) 2024 Yanis Zafirópulos
+Copyright (c) 2026 Yanis Zafirópulos
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
