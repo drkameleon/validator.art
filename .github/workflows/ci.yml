@@ -36,4 +36,4 @@ jobs:
       - name: Run unit tests
         run: |
           arturo -v
-          #arturo test/tester.art
+          arturo test/tester.art
