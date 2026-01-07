@@ -15,18 +15,8 @@ on:
 jobs:  
   build:
     name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-            - {name: "Linux (amd64)",   os: ubuntu-latest,  shell: bash}       
-            - {name: "macOS (amd64)",   os: macos-13,       shell: bash}       
-            - {name: "macOS (arm64)",   os: macos-latest,   shell: bash}       
-            - {name: "Windows (amd64)", os: windows-latest, shell: "msys2 {0}"}
-    
-    defaults:
-        run:
-            shell: ${{ matrix.shell }}
+    runs-on: ubuntu-latest
+
     steps:
       - name: "Cancel similar actions in progress"
         uses: styfle/cancel-workflow-action@0.6.0
