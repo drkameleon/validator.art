@@ -1,0 +1,3 @@
+path: "specs"              ; Path to Tests
+suffix: ".spec.art"        ; Test file's suffix
+binary: "arturo"           ; Arturo Binary
