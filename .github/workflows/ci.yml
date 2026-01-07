@@ -36,4 +36,5 @@ jobs:
       - name: Run unit tests
         run: |
           arturo -v
-          #arturo test/tester.art
+          arturo -p install unitt
+          unitt
