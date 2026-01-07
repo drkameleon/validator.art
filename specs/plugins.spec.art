@@ -1,0 +1,60 @@
+import {unitt}!
+
+import "src/validator.art"!
+
+plugins: _validators
+
+defaultOptions: $[plugin :validator][
+    ;; Extracts the default options from a plugin's params
+    if empty? plugin\params -> return #[]
+
+    result: #[]
+    loop plugin\params [k, v][
+        result\[k]: last v
+    ]
+    result
+]
+
+paramsOf: $[example :any][
+    ;; Normalizes all examples to the format [:any :dictionary]
+    (block? example)?
+        -> @[first example, # last example]
+        -> @[example, #[]]
+]
+
+expressExample: $[example :any][
+    ;; Express example as a string for test descriptions
+    params: paramsOf example
+    options: params 
+        | last
+        | map [k, v] [(true? v)? -> ~".|k|" -> ~".|k|: |v|"]
+        | join.words
+
+    ~"|options| |express first params|"
+]
+
+validate: $[plugin :validator value :string options :dictionary][
+    ;; Calls the validator's action method with the given value and options
+    ;; This also gets the default options from the plugin's params
+    default: defaultOptions plugin
+    plugin\action 
+        value 
+        extend default options
+]
+
+loop plugins [name, plugin][
+    tests: do [plugin\test]
+    valid: tests\valid
+    invalid: tests\invalid
+
+    describe ~"validate.|name|" [
+        loop valid [example][
+            it ~"Should be valid: |expressExample example|" [
+                params: paramsOf example
+                value: first params
+                options: last params
+                expects.to: 'validate [plugin value options]
+            ]
+        ]
+    ]
+]
