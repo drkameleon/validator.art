@@ -47,7 +47,7 @@ loop plugins [name, plugin][
     valid: tests\valid
     invalid: tests\invalid
 
-    describe ~"validate.|name|" [
+    describe ~"valid?.|name|" [
         loop valid [example][
             it ~"Should be valid: |expressExample example|" [
                 params: paramsOf example
