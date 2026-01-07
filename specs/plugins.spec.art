@@ -56,5 +56,14 @@ loop plugins [name, plugin][
                 expects.to: 'validate [plugin value options]
             ]
         ]
+
+        loop invalid [example][
+            it ~"Should be invalid: |expressExample example|" [
+                params: paramsOf example
+                value: first params
+                options: last params
+                expects [not? validate plugin value options]
+            ]
+        ]
     ]
 ]
