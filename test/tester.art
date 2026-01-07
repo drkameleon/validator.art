@@ -1,14 +1,33 @@
-import {unitt}!
+;import {unitt}!
 import ./"../src/validator.art"!
 
 subHeader: function [hdr][
     "\n" ++
-    (color.bold #green  "-------------------------------------\n") ++
+    (color.bold #green "----------------------------------------------------------------\n") ++
     (color.bold #green "  " ++ hdr ++ "\n") ++
-    (color.bold #green "-------------------------------------\n")
+    (color.bold #green "----------------------------------------------------------------\n")
 ]
 
 print subHeader "Misc. Tests"
+
+allOK?: true
+suite: function [suiteTitle, suiteActions].export:[allOK?][
+    print color.bold #cyan suiteTitle
+
+    assert: function [assertAction][
+        (do assertAction)? -> true -> false
+    ]
+
+    test: function [testTitle, testActions][
+        prints color #yellow pad.right "\t- " ++ testTitle 50
+        subResult: all? @ testActions
+        print (subResult)? -> color #green "OK" -> color #red "failed"
+        return subResult
+    ]
+
+    unless all? @ suiteActions ->
+        allOK?: false
+]
 
 suite "Test function calls" [
     test "single param" [
@@ -69,3 +88,8 @@ loop _validators [name, validator][
         ]
     ]
 ]
+
+print ""
+
+(allOK?)? -> print "All tests passed! 🎉"
+          -> panic.code:1 "Tests failed!"
