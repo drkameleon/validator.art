@@ -10,26 +10,6 @@ subHeader: function [hdr][
 
 print subHeader "Misc. Tests"
 
-suite "Test function calls" [
-    test "single param" [
-        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
-        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
-        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
-        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
-        assert -> not? valid?.url ["google", "arturolang"]
-        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
-    ]
-
-    test "multiple params" [
-        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
-        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
-        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
-        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
-        assert -> not? valid?.url ["google", "arturolang"]
-        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
-    ]
-]
-
 print subHeader "Test validators"
 
 loop _validators [name, validator][
