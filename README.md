@@ -6,7 +6,7 @@
      <i>A 🔋-included, supercharged & customizable,<br>string validation library for Arturo</i> 
      <br><br>
      <img src="https://img.shields.io/github/license/arturo-lang/grafito?style=for-the-badge">
-    <img src="https://img.shields.io/badge/language-Arturo-orange.svg?style=for-the-badge">
+    <a href="https://github.com/arturo-lang/arturo" style="text-decoration: none; display: inline-block;"><img src="https://img.shields.io/badge/language-Arturo-6A156B.svg?style=for-the-badge" alt="Language"/></a>
 </p>
 
 
