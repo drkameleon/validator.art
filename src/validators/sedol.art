@@ -1,0 +1,56 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2026 Yanis Zafirópulos
+;==========================================================
+; SEDOL validation
+;
+; based on:
+; https://en.wikipedia.org/wiki/SEDOL
+;
+; @file: src/validators/sedol.art
+;==========================================================
+
+define :sedolValidator is :validator [
+    
+    ;------------------
+    ; built-in data
+    ;------------------
+    allowedList: "0123456789 BCD FGH JKLMN PQRST VWXYZ"
+
+    ;------------------
+    ; methods
+    ;------------------
+
+    stripSpace: function [str] [
+        strip str
+    ]
+    action: method [str, opts][
+        str: \stripSpace str
+        if not? (size str) > 7 [
+            return false
+        ]
+        loop str 'ch ->
+            if not? (in? ch \allowedList) [
+               return false 
+            ] 
+        return true
+    ]
+
+    test: method [][
+        #[
+            valid: [
+                "B15KXQ8"
+            ]
+
+            invalid: [
+                "GB00B15KXQ89"
+            ]
+        ]
+    ]
+    
+]

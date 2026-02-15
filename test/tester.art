@@ -14,6 +14,7 @@ suite "Test function calls" [
     test "single param" [
         assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
         assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
+        assert -> not? valid?.sedol ["12345o6"]
         assert -> not? valid?.email ["drkameleon", "yaniszaf"]
         assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
         assert -> not? valid?.url ["google", "arturolang"]
