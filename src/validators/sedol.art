@@ -31,13 +31,18 @@ define :sedolValidator is :validator [
     ]
     action: method [str, opts][
         str: \stripSpace str
-        if not? (size str) > 7 [
+        if not? (size str) != 7 [
             return false
         ]
         loop str 'ch ->
             if not? (in? ch \allowedList) [
                return false 
-            ] 
+            ]
+        if (numeric? first split str) [
+            if not? numeric? str [
+                return false
+            ]
+        ]
         return true
     ]
 
