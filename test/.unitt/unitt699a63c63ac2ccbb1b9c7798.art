@@ -1,0 +1,563 @@
+standalone: [
+
+        ]
+specs: [
+                #[
+                description: "Test function calls"
+                tests: [
+                                #[
+                                description: "single param"
+                                assertions: [
+                                                [
+                                                        "valid? email [drkameleon@gmail.com yaniszaf@gmail.com]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "valid? url [https://www.google.com https://arturo-lang.io]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "valid? sedol [B15KXQ8]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? sedol [12345o6]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? email [drkameleon yaniszaf]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? email [drkameleon@gmail.com yaniszaf]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? url [google arturolang]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? url [https://www.google.com arturolang]"
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "multiple params"
+                                assertions: [
+                                                [
+                                                        "valid? email [drkameleon@gmail.com yaniszaf@gmail.com]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "valid? url [https://www.google.com https://arturo-lang.io]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? email [drkameleon yaniszaf]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? email [drkameleon@gmail.com yaniszaf]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? url [google arturolang]"
+                                                         true
+                                                ]
+                                                 [
+                                                        "not? valid? url [https://www.google.com arturolang]"
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mBase58\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 4 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["AbCdEfGH" "123456789" "16EiHXyy6VtL3z6VSjkmfuqpfAKDyekA93" "5K6CcnN9FauX6oE3dHgqk6JjpXgDvGP7iySR8jEvfJELTgweikh"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 4 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "*&*#@&^#*&@^#" "ABCDEFGHJO" "16EiHXyy 6VtL3z6V Sjkmfuqpf AKDyekA93"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mCard\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 20 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["378282246310005" "371449635398431" "378734493671000" "3787 3449 3671 000" "30569309025904" "38520000023237" "385 200 000 232 37" "6011111111111117" "6011000990139424" "6011 0009 9013 9424" "3530111333300000" "3566002020360505" "3566 0020 2036 0505" "5555555555554444" "5105105105105100" "5105 1051 0510 5100" "4111111111111111" "4012888888881881" "4012 8888 8888 1881" "4222222222222"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 22 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "&*@^#*&@^#" "3782822463100051" "371449635398432" "378734493671005" "3787 3449 3671 900" "30569309025903" "38520000023231" "385 200 000 202 37" "60111111111111X7" "6011000990139424Y" "6011 0009 9013 9324" "3530111333300880" "3566002020360555" "3566 0020 2036 2505" "5555555555554447" "5105105105105108" "5105 1051 0510 9100" "41111111111111110" "40128888888818810" "4012 8888 8888 18081" "42222222222220"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mDate\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 11 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["2024-01-31" "1999-12-31" "2000-02-29" ["01/31/24" [format: 'short]] ["January 31, 2024" [format: 'long]] ["2024-01-31T13:45:30Z" [format: 'iso8601]] ["20240131" [format: "yyyyMMdd"]] ["31-Jan-2024" [format: "dd-MMM-yyyy"]] ["01/31/2024" [format: "MM/dd/yyyy"]] ["2024.01.31" [format: "yyyy.MM.dd"]] ["13:45 31/01/2024" [format: "HH:mm dd/MM/yyyy"]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 19 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["31-01-2024" "2024/01/31" "2024.01.31" "2024-13-01" "2024-01-32" "2023-02-29" "" "not a date" ["2024-01-31" [format: "dd-MM-yyyy"]] ["31/01/24" [format: 'iso]] ["Jan 31, 2024" [format: 'long]] ["13/31/24" [format: 'short]] ["February 29, 2023" [format: 'long]] ["2024-01-31T25:45:30Z" [format: 'iso8601]] ["2024-01-31T13:66:4Z" [format: 'iso8601]] ["2024-01-31 13:45:30Z" [format: 'iso8601]] ["202401311" [format: "yyyyMMdd"]] ["31-January-2024" [format: "dd-MMM-yyyy"]] ["13:45:31/01/2024" [format: "HH:mm dd/MM/yyyy"]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mEmail\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 9 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["drkameleon@gmail.com" "yaniszaf@gmail.com" "test@website.com" "test.sth@website.com" "test.sth.else+now@website.com" "test-more@domain.com" "test@and-more.co.uk" "test-me@now.fr" "123456789andonemoretest@domain.com"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 9 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["drkameleongmail.com" "foobar" "user@" "@domain.com" "user#domain.com" "user..@domain.com" "test.sth.com" {
+                                                                                test(sth"very)weird]com
+                                                                        } {
+                                                                                test"quotes"instring.com
+                                                                        }] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mFloating\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 3 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["12" "12.34" "12345.67890"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 3 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "three" "%$#@^#$"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mIban\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 86 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["GB33BUKB20201555555555" "GB94BARC10201530093459" "GB82 WEST 1234 5698 7654 32" "DE75512108001245126199" "AD1200012030200359100100" "AE070331234567890123456" "AL47212110090000000235698741" "AT611904300234573201" "AZ21NABZ00000000137010001944" "BA391290079401028494" "BE68539007547034" "BG80BNBG96611020345678" "BH67BMAG00001299123456" "BR1800360305000010009795493C1" "BY13NBRB3600900000002Z00AB00" "CH9300762011623852957" "CR05015202001026284066" "CY17002001280000001200527600" "CZ6508000000192000145399" "DE89370400440532013000" "DK5000400440116243" "DO28BAGR00000001212453611324" "EE382200221020145685" "EG380019000500000000263180002" "ES9121000418450200051332" "FI2112345600000785" "FO6264600001631634" "FR1420041010050500013M02606" "GB29NWBK60161331926819" "GE29NB0000000101904917" "GI75NWBK000000007099453" "GL8964710001000206" "GR1601101250000000012300695" "GT82TRAJ01020000001210029690" "HR1210010051863000160" "HU42117730161111101800000000" "IE29AIBK93115212345678" "IL620108000000099999999" "IQ98NBIQ850123456789012" "IR580540105180021273113007" "IS140159260076545510730339" "IT60X0542811101000000123456" "JO94CBJO0010000000000131000302" "KW81CBKU0000000000001234560101" "KZ86125KZT5004100100" "LB62099900000001001901229114" "LC55HEMM000100010012001200023015" "LI21088100002324013AA" "LT121000011101001000" "LU280019400644750000" "LV80BANK0000435195001" "LY83002048000020100120361" "MA64011519000001205000534921" "MC5811222000010123456789030" "MD24AG000225100013104168" "ME25505000012345678951" "MK07250120000058984" "MR1300020001010000123456753" "MT84MALT011000012345MTLCAST001S" "MU17BOMM0101101030300200000MUR" "NI79BAMC00000000000003123123" "NL91ABNA0417164300" "NO9386011117947" "OM810180000001299123456" "PK36SCBL0000001123456702" "PL61109010140000071219812874" "PS92PALS000000000400123456702" "PT50000201231234567890154" "QA58DOHB00001234567890ABCDEFG" "RO49AAAA1B31007593840000" "RS35260005601001611379" "SA0380000000608010167519" "SC18SSCB11010000000000001497USD" "SE4550000000058398257466" "SI56263300012039086" "SK3112000000198742637541" "SM86U0322509800000000270100" "ST23000200000289355710148" "SV62CENR00000000000000700025" "TL380080012345678910157" "TN5910006035183598478831" "TR330006100519786457841326" "UA213223130000026007233566001" "VA59001123000012345678" "VG96VPVG0000012345678901" "XK051212012345678906"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 107 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "JKFDS*&^F&*DSF" "US64SVBKUS6S3300958879" "DR75512108001245126199" "GB12BARC20201530093A59" "GB96BARC2020153009345" "DE755121080012451261" "GB96BARC202015300934591" "DE755121080012451261991" "DE75512108001245126191" "AD1200012030200359100120" "AT611904300234573221" "BA39129007940028494" "BE685390047034" "VG611904300234573201" "ST68000200010192194210112" "MCBKCWCU25727002" "ZZ89 3704 0044 0532 0130 00" "DE89 3704 0044 0530 7877 089" "DE89 3704 0044 053A 013B 00" "DE90 3704 0044 0532 0130 00" "CH4550050201124153987" "CH45 5005 0201 1241 5398 7" "AD1200012030200359100101" "AE070331234567890123ABC" "AL472121100900000002356987" "AM47212110090000002356987411" "AT611904300234573202" "AZ21NABZ0000000013701001944X" "BA39129007940102849A" "BE685390075470345" "BG80BNBG96611020345678AB" "BH67BMAG000012991234567" "BR1800360305000010009795493CC" "BY13NBRB3600900000002Z00ABA0" "CH930076201162385295" "CR0501520200102628406600" "CY170020012800000012005276" "CZ65080000001920001453990" "DE89370400440532013099" "DK5000400440116" "DO28BAGR0000000121245361132A" "DZ400040017440100105048" "EE38220022102014568599" "EG38001900050000000026318000" "ES91210004184502000513320" "FI21123456000007" "FO62646000016316340" "FR1420041010050500013M0260X" "GB29NWBK6016133192681" "GE29NB000000010190491700" "GI75NWBK00000000709945" "GL896471000100020600" "GR16011012500000000123006950" "GT82TRAJ0102000000121002969A" "HR121001005186300016A" "HU4211773016111110180000000A" "IE29AIBK9311521234567" "IL6201080000000999999990" "IQ98NBIQ85012345678901" "IR58054010518002127311300A" "IS1401592600765455107303390" "IT60X054281110100000012345" "JO94CBJO001000000000013100030" "KW81CBKU000000000000123456010A" "KZ86125KZT500410010A" "LB6209990000000100190122911" "LC55HEMM0001000100120012000230150" "LI2108810000232401" "LT12100001110100100A" "LU28001940064475000A" "LV80BANK000043519500100" "LY830020480000201001203610" "MA6401151900000120500053492" "MC5811222000010123456789030A" "MD24AG00022510001310416800" "ME255050000123456789510" "MK0725012000005898400" "MR1300020001010000123456ABC" "MT84MALT011000012345MTLCAST00" "MU17BOMM0101101030300200000MU1" "NI79BAMC000000000000001231230" "NL91ABNA041716430A" "NO938601111794700" "OM81018000000129912345600" "PK36SCBL000000112345670A" "PL6110901014000007121981287A" "PS92PALS0000000004001234567020" "PT5000020123123456789015A" "QA58DOHB00001234567890ABCDEF01" "RO49AAAA1B3100759384000A" "RS3526000560100161137A" "SA038000000060801016751A" "SC18SSCB1101000000000000149" "SE45500000000583982574660" "SI5626330001203908A" "SK31120000001987426375410" "SM86U0322509800000000270100A" "ST23000200000289355710148A" "SV62CENR0000000000000070002A" "TL38008001234567891015A" "TN591000603518359847883A" "TR330006100519786457841326A" "UA21322313000002600723356600A" "VA5900112300001234567A" "VG96VPVG000001234567890A" "XK05121201234567890A"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mInteger\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 3 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["12" "1234" "1234567890"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 4 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "1.5" "three" "%$#@^#$"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mIp\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 26 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["1.2.3.4" "0.0.0.0" "255.255.255.255" "127.0.0.1" "64.233.161.147" "10.0.0.0" "2001:db8:3333:4444:5555:6666:7777:8888" "2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF" "::" "2001:db8::" "::1234:5678" "2001:db8::1234:5678" "fe80::1ff:fe23:4567:890a" "fe80::1ff:fe23:4567:890a%eth0" "1:2:3:4:5:6:7:8" "::ffff:192.0.2.128" "::ffff:192.168.1.1" "::FFFF:192.168.1.1" "::ffff:127.0.0.1" "::ffff:0.0.0.0" "::ffff:255.255.255.255" "::ffff:192.0.2.128%eth0" ["1.2.3.4" [v4: true]] ["127.0.0.1" [v4: true]] ["2001:db8:3333:4444:5555:6666:7777:8888" [v6: true]] ["2001:db8::1234:5678" [v6: true]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 21 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["fdsfsdf" "256.168.0.1" "192.168.0.300" "192.168.1" "192.168.01.1" "192.168.0.0/24" "1.2.3.4.5" ".1.2.3.4" "1.2.3.4." "1..2.3.4" "2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF:" ":2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF" "2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF:1111" ":::1" "2001:db8::1::1" "02001:db8::" "2001:db8::/32" ["1.2.3.4" [v6: true]] ["127.0.0.1" [v6: true]] ["2001:db8:3333:4444:5555:6666:7777:8888" [v4: true]] ["2001:db8::1234:5678" [v4: true]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mIsbn\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 6 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["0306406152" "0-306-40615-2" "9780596528126" "978-0596528126" ["0306406152" [10: true]] ["978-0596528126" [13: true]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 5 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["askdjashd" "0306777152" "978-0596528199" ["0306406152" [13: true]] ["978-0596528126" [10: true]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mJson\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 23 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["null" "true" "false" "123" "3.14" {
+                                                                                "hello"
+                                                                        } "[]" "[1,2,3]" {
+                                                                                ["a","b","c"]
+                                                                        } "{}" {
+                                                                                {"name":"John"}
+                                                                        } {
+                                                                                {"age":30,"city":"London"}
+                                                                        } {
+                                                                                {"users":[{"id":1},{"id":2}]}
+                                                                        } {
+                                                                                [{"x":1},{"y":2}]
+                                                                        } "  {  }  " {
+                                                                                {
+                                                                                  "key": "value"
+                                                                                }
+                                                                        } ["123" [strict: true]] ["true" [strict: true]] ["null" [strict: true]] [{
+                                                                                        "hello"
+                                                                                } [strict: true]] [{
+                                                                                        {"x":1}
+                                                                                } [strict: true]] ["[1,2,3]" [strict: true]] [{
+                                                                                        {"arr":[1,null,true]}
+                                                                                } [strict: true]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 15 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "{" "}" "[" "]" {
+                                                                                {name:"John"}
+                                                                        } {
+                                                                                {"items":}
+                                                                        } "{\'key\':\'value\'}" "undefined" "NaN" "Infinity" "{[}]" "[1,2}}}" [{
+                                                                                        {"x": 1 }
+                                                                                } [strict: true]] ["[1, 2, 3]" [strict: true]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mMd5\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 8 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["d41d8cd98f00b204e9800998ecf8427e" "900150983cd24fb0d6963f7d28e17f72" "f96b697d7cb7938d525a2f31aaf161d0" "D41D8CD98F00B204E9800998ECF8427E" "900150983CD24FB0D6963F7D28E17F72" "F96B697D7CB7938D525A2F31AAF161D0" "d41d8cd98f00b204e9800998ECF8427E" "900150983cD24Fb0d6963f7d28E17f72"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 8 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "d41d8cd98f" "d41d8cd98f00b204e9800998ecf8427e0" "g41d8cd98f00b204e9800998ecf8427e" "x96b697d7cb7938d525a2f31aaf161d0" "h00150983cd24fb0d6963f7d28e17f72" "d41d-8cd9-8f00-b204-e980-0998-ecf8" "d41d8cd9 8f00b204 e9800998 ecf8427e"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mPassword\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 22 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["Abcd123!@#" "Password123!" "Str0ng!Pass" "C0mpl3x!@#$" "ABcdEF6#" ["Password123!" [min: 8]] ["Ab1!defgh" [special: 1]] ["Ab1!=xxxxxxx" [max: 28]] ["Ab1! xyz!" [spaces: true]] ["Ab1!m\xC3\xBCnich" [unicode: true]] ["ab1!" [upper: 0 min: 4]] ["AB1!" [lower: 0 min: 4]] ["ABCabc!" [num: 0 min: 7]] ["ABCabc123" [special: 0]] "P@ssw#rd123!" ["Ab1!@#$%^&" [special: 5]] ["AABBCc123!" [upper: 4]] ["aabbCC123!" [lower: 4]] ["AbC!12345" [num: 5]] ["Ab123456" [special: 0 min: 8]] ["ABCDEF12!" [lower: 0 num: 2]] ["Aa1!@#$ xyz" [spaces: true special: 4]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 25 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "Aa1!" "abcd1234!@" "ABCD1234!@" "ABCDabcd!@" "ABCDabcd123" ["Pass word1!" [spaces: false]] ["Pass m\xC3\xBCnich!" [unicode: false]] ["Aa1!" [min: 8]] ["Aa1!bcde" [upper: 2]] ["Aa1!bcdE" [lower: 5]] ["Aa1!bcde" [num: 3]] ["Aa1!bcde" [special: 2]] ["Ab1!@" [min: 10]] ["Ab1!abcdefghijk" [max: 10]] ["AAb1!cde" [lower: 6]] ["aab1!CD" [upper: 3]] ["Aa!bcd" [num: 3]] ["Ab1cdef" [special: 3]] ["Ab1!@x y" [spaces: false special: 3]] ["Ab1!@\xCE\xB1\xCE\xB2" [unicode: false special: 3]] ["Ab1!" [min: 8 upper: 2]] ["abcd123!" [upper: 2 special: 2]] ["ABCD123!" [lower: 2 special: 2]] ["Aa!cdef" [num: 2 special: 2]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mSedol\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 2 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["B0SWJX3" "B15KXQ8"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 4 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["GB00B15KXQ89" "712345B" "A234567" "B15KXQ7"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mSha\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 7 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? [["da39a3ee5e6b4b0d3255bfef95601890afd80709" [1: true]] ["2fd4e1c67a2d28fced849ee1bb76e7391b93eb12" [1: true]] ["d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f" [224: true]] "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" ["d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592" [256: true]] ["38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b" [384: true]] ["cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" [512: true]]] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 6 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? [["e3b0c44298fc1c" [256: true]] ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85500" [256: true]] "g3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" "z7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592" "e3b0-c442-98fc-1c14-9afb-f4c8-996f-b924" "e3b0c442 98fc1c14 9afbf4c8 996fb924"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mTld\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 5 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["com" "co.uk" "org.uk" "es" "de"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 5 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["" "@#@#91273" "df" "arturo" "zaz"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mUrl\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 53 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                every? ["https://arturo-lang.io" "https://www.example.com/" "http://www.example.com/" "https://example.com/" "http://example.com/" "http://foo.com/blah_blah" "http://foo.com/blah_blah/" "http://j.mp" "http://www.example.com/wpstyle/?p=364" "https://www.example.com/foo/?bar=baz&inga=42&quux" "http://foo.com/blah_(wikipedia)#cite-1" "http://example.com/example?example=example" "http://foo.com/blah_blah_(wikipedia)" "http://foo.com/blah_blah_(wikipedia)_(again)" "http://foo.com/(something)?after=parens" "https://example.com/example/example/example" "https://unpkg.com/example@1.0.0/example/example-example.html" "https://sub1.sub2.example.com" "http://example.example.com/example/#&example=example" "https://example.co.uk" "https://example.app" "https://example.dev/path?query=value#fragment" "http://localhost" "http://localhost:8080" "http://localhost:1" "http://localhost:65535" "http://127.0.0.1" "http://127.0.0.1:3000" "https://127.0.0.1:3000" "http://192.168.1.1" "http://10.0.0.0" "http://0.0.0.0:4000" "http://8.8.8.8:65535" "http://255.255.255.255" "https://arturo-lang.io" "https://www.example.com/" "http://example.net" "https://my-site.org" "https://my-app.dev" "https://cool-project.xyz" "https://my-store.shop" "https://new-blog.blog" "https://website.uk" "https://company.de" "https://shop.jp" "https://example.co.uk" "https://website.com.au" "https://shop.co.jp" "http://localhost" "http://localhost:8080" "http://127.0.0.1" "http://127.0.0.1:3000" "http://192.168.1.1:8080"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 58 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        {
+                                                                not? some? ["drkameleon@gmail.com" "arturolangio" "https:// arturo-lang.io" "http://" "http://." "http://.." "http://../" "foo.com" "ftp://example.com" "https:/example.com" "https//example.com" "https:://example.com" "h://test" ":// should fail" "rdar://1234" "http://example..com" "http://example.com../" "http://.example.com" "http://example." "http://-error-.invalid/" "http://a.b--c.de/" "http://-a.b.co" "http://a.b-.co" "http://.www.foo.bar/" "http://www.foo.bar./" "https://exa mple.com" "https://\xC2\xA3\xC2\xA3example.com" "https://example.com/path with spaces" "http://userid:password@example.com:8080" "http://userid@example.com" "http://userid:password@example.com" "http://localhost:0" "http://localhost:65536" "http://127.0.0.1:65536" "http://localhost:-80" "http://localhost:abc" "https://127.0.0.1:" "http://256.256.256.256" "http://1.2.3.4.5" "http://1.1.1.1.1" "http://123.123.123" "http://3628126748" "http://?" "http://??" "http://??/" "http://#" "http://##" "http://##/" "http://foo.bar?q=Spaces should be encoded" "https://example.invalid" "https://website.wrongtld" "https://test.notarealtld" "http://something.thisisnotavalidtld" "https://example." "https://website.c" "https://test.12" "https://example.co.wrongcountry" "https://website.com.invalidcountry"] 'v [passedParams: new params val: new v if block? v [val: new v\0 loop v\1 [nm prm] [passedParams\[nm]: do @ [prm]]] res: do [validator\action val passedParams] res]
+                                                        }
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+                 #[
+                description: "\x1B[1;36mVersion\x1B[0m"
+                tests: [
+                                #[
+                                description: "all 0 positive checks are valid"
+                                assertions: [
+                                                [
+                                                        "every? [] \'v [passedParams: new params val: new v if block? v [val: new v\\0 loop v\\1 [nm prm] [passedParams\\[nm]: do @ [prm]]] res: do [validator\\action val passedParams] res]"
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                                 #[
+                                description: "all 0 negative checks are invalid"
+                                assertions: [
+                                                [
+                                                        "not? some? [] \'v [passedParams: new params val: new v if block? v [val: new v\\0 loop v\\1 [nm prm] [passedParams\\[nm]: do @ [prm]]] res: do [validator\\action val passedParams] res]"
+                                                         true
+                                                ]
+                                        ]
+                                ]
+                        ]
+                ]
+        ]

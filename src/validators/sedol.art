@@ -50,6 +50,7 @@ define :sedolValidator is :validator [
     ; should be 7 chars
     ; should contain only alphanumeric chars except vowels
     ; if first char is numeric, the whole string should be numeric
+    ; check-digit should match.
     action: method [str, opts][
         str: \stripSpace str
         if not? (size str) = 7 [
