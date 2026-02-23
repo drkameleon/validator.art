@@ -1,15 +1,6 @@
 import {unitt}!
 import ./"../src/validator.art"!
 
-subHeader: function [hdr][
-    "\n" ++
-    (color.bold #green  "-------------------------------------\n") ++
-    (color.bold #green "  " ++ hdr ++ "\n") ++
-    (color.bold #green "-------------------------------------\n")
-]
-
-print subHeader "Misc. Tests"
-
 suite "Test function calls" [
     test "single param" [
         assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
@@ -30,8 +21,6 @@ suite "Test function calls" [
     ]
 ]
 
-print subHeader "Test validators"
-
 loop _validators [name, validator][
     params: #[]
 
@@ -51,6 +40,7 @@ loop _validators [name, validator][
         ;print [val, passedParams]                      ; uncomment to DEBUG
         res: do [validator\action val passedParams]
         ;print ["result:" res]                          ; uncomment to DEBUG
+        
         res
     ]
     
@@ -58,14 +48,16 @@ loop _validators [name, validator][
         tests: validator\test
 
         valids: @ tests\valid
-        test.static ~{all |size valids| positive checks are valid} [
+        test ~{all |size valids| positive checks are valid} [
             assert ->
                 every? valids 'v run
         ]
         invalids: @ tests\invalid
-        test.static ~{all |size invalids| negative checks are invalid} [
+        test ~{all |size invalids| negative checks are invalid} [
             assert ->
                 not? some? invalids 'v run
         ]
     ]
 ]
+
+unitt\report 'full

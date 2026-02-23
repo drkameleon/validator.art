@@ -2,9 +2,7 @@ name: "Build & Test"
 on:
   push:
     branches:
-      - '**'
-    tags-ignore:
-      - '**'
+      - main
   pull_request:
     paths-ignore:
       - 'docs/*'
@@ -36,4 +34,4 @@ jobs:
       - name: Run unit tests
         run: |
           arturo -v
-          #arturo test/tester.art
+          arturo test/tester.art
