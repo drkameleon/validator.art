@@ -37,11 +37,10 @@ loop _validators [name, validator][
                 passedParams\[nm]: do @[prm]
             ]
         ]
-
+        ;print [val, passedParams]                      ; uncomment to DEBUG
         res: do [validator\action val passedParams]
-        unless res ->
-            print ["FAILED: " name " with params: " passedParams " and value: " val]
-
+        ;print ["result:" res]                          ; uncomment to DEBUG
+        
         res
     ]
     
