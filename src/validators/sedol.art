@@ -1,0 +1,86 @@
+;===============================================
+; Validator.art
+;
+; String validation library
+; for Arturo
+;
+; MIT License
+; (c) 2026 Yanis Zafirópulos
+;==========================================================
+; SEDOL validation
+;
+; based on:
+; https://en.wikipedia.org/wiki/SEDOL
+;
+; @file: src/validators/sedol.art
+;==========================================================
+
+define :sedolValidator is :validator [
+    
+    ;------------------
+    ; built-in data
+    ;------------------
+    allowedList: "0123456789 BCD FGH JKLMN PQRST VWXYZ"
+
+    ;------------------
+    ; methods
+    ;------------------
+
+    stripSpace: function [str] [
+        strip str
+    ]
+
+    checkDigit: function [str] [
+        weights: [1 3 1 7 3 9]
+        sum: 0
+        loop.with: 'i str\[0..5] 'ch [
+            ix_ch: (index \allowedList (to :string ch))
+            if (null? ix_ch) [
+                return null
+            ]
+            sum: sum + (ix_ch * weights\[i])
+        ]
+        return to :string (mod (10 - (mod sum 10)) 10)
+    ]
+    ; SEDOL validation rules
+    ; should be 7 chars
+    ; should contain only alphanumeric chars except vowels
+    ; if first char is numeric, the whole string should be numeric
+    ; check-digit should match.
+    action: method [str, opts][
+        str: \stripSpace str
+        if not? (size str) = 7 [
+            return false
+        ]
+        loop str 'ch ->
+            if not? (in? ch \allowedList) [
+               return false 
+            ]
+        if (numeric? first split str) [
+            if not? numeric? str [
+                return false
+            ]
+        ]
+        if not? ((\checkDigit str) = to :string str\[6]) [
+            return false
+        ]
+        return true
+    ]
+
+    test: method [][
+        #[
+            valid: [
+                "B0SWJX3"
+                "B15KXQ8"
+            ]
+
+            invalid: [
+                "GB00B15KXQ89" ; more than 7 char
+                "712345B"      ; the whole str is not numeric as first char is numeric
+                "A234567"      ; contains vowel
+                "B15KXQ7"      ; wrong checkdigit
+            ]
+        ]
+    ]
+    
+]

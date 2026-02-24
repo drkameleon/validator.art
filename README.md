@@ -9,19 +9,18 @@
     <a href="https://github.com/arturo-lang/arturo" style="text-decoration: none; display: inline-block;"><img src="https://img.shields.io/badge/language-Arturo-6A156B.svg?style=for-the-badge" alt="Language"/></a>
 </p>
 
+---
 
---- 
- 
 <!--ts-->
 
-* [What does this package do?](#what-does-this-package-do)
-* [How do I use it?](#how-do-i-use-it)
-* [Function Reference](#function-reference)
-* [Contributing](#contributing)
-* [License](#license)   
+- [What does this package do?](#what-does-this-package-do)
+- [How do I use it?](#how-do-i-use-it)
+- [Function Reference](#function-reference)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!--te-->
- 
+
 ---
 
 ### What does this package do?
@@ -49,6 +48,9 @@ valid?.ip "127.0.0.1"
 
 valid?.ip.v6 "127.0.0.1"
 ; => false
+
+valid?.sedol "B0SWJX3"
+; => true
 ```
 
 And we may also check more than one strings:
@@ -60,7 +62,6 @@ valid?.email ["my@email.com", "info@google.com"]
 
 > [!TIP]
 > Different type of checks may accept different extra params, so you'd better have a look into the reference first! 😉
-
 
 ### Function reference
 
@@ -78,46 +79,47 @@ check if given string is valid
 
 ##### Attributes
 
-| Option | Related parameters | Description |
-|----|----|----|
-| base58 | | check base-58 encoding |
-| card | | check credit card number |
-| date | | test if string contains valid date |
-| | .format: | specify date format (default: `'iso` or `yyyy-MM-dd`) - could also be one of `'iso8601`, `'short`, `'long` or any given string |
-| email | | verify e-mail address | 
-| floating | | test if string contains a parsable floating-point value |
-| integer | | test if string contains a parsable integer value |
-| iban | | verify IBAN (International Bank Account Number) |
-| ip | | verify IP addresses |
-| | .v4 | look for IPv4 addresses only |
-| | .v6 | look for IPv6 addresses only |
-| isbn | | verify ISBN code |
-| | .10 | check for ISBN-10 codes only |
-| | .13 | check for ISBN-13 codes only |
-| json | | test if string contains valid JSON |
-| | .strict | enforce stricter, two-way validation |
-| md5 | | check if valid MD5 hash |
-| password | | check if given password is strong enough |
-| | .min: | minimum length (default: 8) |
-| | .max: | maximum length (default: 128) |
-| | .lower: | minimum lowercase characters (default: 1) |
-| | .upper: | minimum uppercase characters (default: 1) |
-| | .num: | minimum numeric characters (default: 1) |
-| | .special: | minimum special characters (default: 1) |
-| | .spaces | allow spaces (default: false) |
-| | .unicode | allow unicode characters (default: false) |
-| sha | | verify SHA hash |
-| | .1 | check for SHA-1 hashes only |
-| | .224 | check for SHA-224 hashes only |
-| | .256 | check for SHA-256 hashes only (default) |
-| | .384 | check for SHA-384 hashes only |
-| | .512 | check for SHA-512 hashes only |
-| tld | | verify TLD (Top-Level Domain) |
-| url | | verify URL |
+| Option   | Related parameters | Description                                                                                                                    |
+| -------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| base58   |                    | check base-58 encoding                                                                                                         |
+| card     |                    | check credit card number                                                                                                       |
+| date     |                    | test if string contains valid date                                                                                             |
+|          | .format:           | specify date format (default: `'iso` or `yyyy-MM-dd`) - could also be one of `'iso8601`, `'short`, `'long` or any given string |
+| email    |                    | verify e-mail address                                                                                                          |
+| floating |                    | test if string contains a parsable floating-point value                                                                        |
+| integer  |                    | test if string contains a parsable integer value                                                                               |
+| iban     |                    | verify IBAN (International Bank Account Number)                                                                                |
+| ip       |                    | verify IP addresses                                                                                                            |
+|          | .v4                | look for IPv4 addresses only                                                                                                   |
+|          | .v6                | look for IPv6 addresses only                                                                                                   |
+| isbn     |                    | verify ISBN code                                                                                                               |
+|          | .10                | check for ISBN-10 codes only                                                                                                   |
+|          | .13                | check for ISBN-13 codes only                                                                                                   |
+| json     |                    | test if string contains valid JSON                                                                                             |
+|          | .strict            | enforce stricter, two-way validation                                                                                           |
+| md5      |                    | check if valid MD5 hash                                                                                                        |
+| password |                    | check if given password is strong enough                                                                                       |
+|          | .min:              | minimum length (default: 8)                                                                                                    |
+|          | .max:              | maximum length (default: 128)                                                                                                  |
+|          | .lower:            | minimum lowercase characters (default: 1)                                                                                      |
+|          | .upper:            | minimum uppercase characters (default: 1)                                                                                      |
+|          | .num:              | minimum numeric characters (default: 1)                                                                                        |
+|          | .special:          | minimum special characters (default: 1)                                                                                        |
+|          | .spaces            | allow spaces (default: false)                                                                                                  |
+|          | .unicode           | allow unicode characters (default: false)                                                                                      |
+| sedol    |                    | verify SEDOL formats                                                                                                           |
+| sha      |                    | verify SHA hash                                                                                                                |
+|          | .1                 | check for SHA-1 hashes only                                                                                                    |
+|          | .224               | check for SHA-224 hashes only                                                                                                  |
+|          | .256               | check for SHA-256 hashes only (default)                                                                                        |
+|          | .384               | check for SHA-384 hashes only                                                                                                  |
+|          | .512               | check for SHA-512 hashes only                                                                                                  |
+| tld      |                    | verify TLD (Top-Level Domain)                                                                                                  |
+| url      |                    | verify URL                                                                                                                     |
 
 ##### Returns
 
-- *:logical*
+- _:logical_
 
 ### Contributing
 
@@ -154,4 +156,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- 
