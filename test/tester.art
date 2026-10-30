@@ -46,25 +46,31 @@ suite "Test function calls" [
 ]
 
 loop _validators [name, validator][
-    params: #[]
 
-    loop validator\params [nm,prm][
-        params\[nm]: prm\1
-    ]
+    ; every test case goes through `valid?` - exactly
+    ; as a user would call it - so that attribute handling,
+    ; param type-checking, etc are tested as well
+    ;
+    ; e.g. `["01/31/24" [format: 'short]]` for `date`
+    ; becomes: `valid?.date.format:pv\0 val`
+    ; with `pv: @['short]` and `val: "01/31/24"`
 
     run: [
-        passedParams: new params
         val: new v
+        pv: []
+        attributes: ""
         if block? v [
             val: new v\0
             loop v\1 [nm,prm][
-                passedParams\[nm]: do @[prm]
+                attributes: attributes ++ ~".|to :string nm|:pv\\|size pv|"
+                pv: pv ++ @[do @[prm]]
             ]
         ]
-        ;print [val, passedParams]                      ; uncomment to DEBUG
-        res: do [validator\action val passedParams]
+        call: ~"valid?.|name||attributes| val"
+        ;print [call, val, pv]                          ; uncomment to DEBUG
+        res: do call
         ;print ["result:" res]                          ; uncomment to DEBUG
-        
+
         res
     ]
     
