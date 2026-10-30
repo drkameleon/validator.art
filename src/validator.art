@@ -55,12 +55,14 @@ export module [
     ; Private methods
     ;---------------------------
 
-    fetchParams: method [usedParams :dictionary][
+    fetchParams: method [given :dictionary, usedParams :dictionary][
         res: #[]
 
         unless empty? usedParams ->
             loop usedParams [pname, pspec][
-                switch pval: <= attr pname [
+                switch key? given pname [
+                    pval: given\[pname]
+
                     ; the expected type may be a single type
                     ; or a block of accepted types
                     ensure -> some? flatten @[pspec\0] 't -> is? t pval
@@ -116,19 +118,24 @@ export module [
         ;;      ; => true
         ;; }
 
+        ; grab (& consume) all given attributes right away:
+        ; attributes are global and every built-in function
+        ; pops the ones it recognizes - e.g. `#[]` (`dictionary`)
+        ; would silently take our `.lower` - while leftovers
+        ; would leak into the next call
+        given: attrs
+
         inputs: (string? str)? -> @[str][
             ensure -> is? [:string] str
             str
         ]
 
-        ; first, collect all requested validators
-        ; (along with their options), so that all
-        ; attributes are consumed before we return -
-        ; otherwise, leftovers would leak into the next call
+        ; collect all requested validators
+        ; (along with their options)
         requested: []
         loop \validators [name, validator][
-            if attr name [
-                options: \fetchParams validator\params
+            if key? given name [
+                options: \fetchParams given validator\params
                 requested: requested ++ @[validator, options]
             ]
         ]
