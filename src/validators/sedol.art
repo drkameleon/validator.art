@@ -52,6 +52,10 @@ define :sedolValidator is :validator [
         if not? (size str) = 7 [
             return false
         ]
+        ; spaces in allowedList are just placeholders for vowels
+        if contains? str " " [
+            return false
+        ]
         loop str 'ch ->
             if not? (in? ch \allowedList) [
                return false 
@@ -79,6 +83,7 @@ define :sedolValidator is :validator [
                 "712345B"      ; the whole str is not numeric as first char is numeric
                 "A234567"      ; contains vowel
                 "B15KXQ7"      ; wrong checkdigit
+                "B SWJX3"      ; contains space (in place of a vowel)
             ]
         ]
     ]
