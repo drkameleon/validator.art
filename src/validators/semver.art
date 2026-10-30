@@ -7,15 +7,15 @@
 ; MIT License
 ; (c) 2026 Yanis Zafirópulos
 ;==========================================================
-; Version validation
+; SemVer validation
 ;
 ; based on SemVer 2.0.0:
 ; https://semver.org
 ;
-; @file: src/validators/version.art
+; @file: src/validators/semver.art
 ;==========================================================
 
-define :versionValidator is :validator [
+define :semverValidator is :validator [
 
     ;------------------
     ; built-in data

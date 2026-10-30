@@ -5,7 +5,7 @@
 <p align="center">
      <i>A 🔋-included, supercharged & customizable,<br>string validation library for Arturo</i> 
      <br><br>
-     <img src="https://img.shields.io/github/license/arturo-lang/grafito?style=for-the-badge">
+     <img src="https://img.shields.io/github/license/drkameleon/validator.art?style=for-the-badge">
     <a href="https://github.com/arturo-lang/arturo" style="text-decoration: none; display: inline-block;"><img src="https://img.shields.io/badge/language-Arturo-6A156B.svg?style=for-the-badge" alt="Language"/></a>
 </p>
 
@@ -108,6 +108,7 @@ check if given string is valid
 |          | .spaces            | allow spaces (default: false)                                                                                                  |
 |          | .unicode           | allow unicode characters (default: false)                                                                                      |
 | sedol    |                    | verify SEDOL formats                                                                                                           |
+| semver   |                    | verify version string (SemVer)                                                                                                 |
 | sha      |                    | verify SHA hash                                                                                                                |
 |          | .1                 | check for SHA-1 hashes only                                                                                                    |
 |          | .224               | check for SHA-224 hashes only                                                                                                  |
@@ -116,7 +117,6 @@ check if given string is valid
 |          | .512               | check for SHA-512 hashes only                                                                                                  |
 | tld      |                    | verify TLD (Top-Level Domain)                                                                                                  |
 | url      |                    | verify URL                                                                                                                     |
-| version  |                    | verify version string (SemVer)                                                                                                 |
 
 ##### Returns
 
