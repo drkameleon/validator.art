@@ -19,7 +19,7 @@ define :dateValidator is :validator [
     ;------------------
 
     params: #[
-        format: @[:string, "yyyy-MM-dd"]  ; default ISO format
+        format: @[[:string :literal], "yyyy-MM-dd"]  ; default ISO format
     ]
 
     ;------------------

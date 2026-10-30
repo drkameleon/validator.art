@@ -61,7 +61,9 @@ export module [
         unless empty? usedParams ->
             loop usedParams [pname, pspec][
                 switch pval: <= attr pname [
-                    ensure -> is? pspec\0 pval
+                    ; the expected type may be a single type
+                    ; or a block of accepted types
+                    ensure -> some? flatten @[pspec\0] 't -> is? t pval
                     res\[pname]: pval
                 ][
                     res\[pname]: pspec\1
