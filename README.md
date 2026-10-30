@@ -116,6 +116,7 @@ check if given string is valid
 |          | .512               | check for SHA-512 hashes only                                                                                                  |
 | tld      |                    | verify TLD (Top-Level Domain)                                                                                                  |
 | url      |                    | verify URL                                                                                                                     |
+| version  |                    | verify version string (SemVer)                                                                                                 |
 
 ##### Returns
 
