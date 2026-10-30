@@ -21,6 +21,11 @@ suite "Test function calls" [
         assert -> not? valid?.url ["google", "arturolang"]
         assert -> not? valid?.url ["https://www.google.com", "arturolang"]
     ]
+
+    test "no validator" [
+        assert -> throws? [valid? "drkameleon@gmail.com"]
+        assert -> throws? [valid?.emial "drkameleon@gmail.com"]
+    ]
 ]
 
 loop _validators [name, validator][

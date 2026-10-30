@@ -104,9 +104,11 @@ export module [
             ensure -> is? [:string] str
             str
         ]
-        
+
+        found?: false
         loop \validators [name, validator][
             if attr name [
+                found?: true
                 options: \fetchParams validator\params
                 loop inputs 'inp [
                     unless do [ validator\action inp options ] ->
@@ -114,6 +116,12 @@ export module [
                 ]
             ]
         ]
+
+        ; make sure we don't silently accept
+        ; a missing (or misspelled) validator
+        unless found? ->
+            panic "no (valid) validator specified"
+
         return true
     ]
 ]!
