@@ -22,6 +22,16 @@ suite "Test function calls" [
         assert -> not? valid?.url ["https://www.google.com", "arturolang"]
     ]
 
+    test "with params" [
+        assert -> valid?.date.format:"MM/dd/yyyy" "01/31/2024"
+        assert -> valid?.date.format:'short "01/31/24"
+        assert -> valid?.date.format:'long "January 31, 2024"
+        assert -> not? valid?.date.format:'iso "31/01/24"
+        assert -> valid?.password.min:4 "Ab1!"
+        assert -> not? valid?.password "Ab1!"
+        assert -> throws? [valid?.password.min:"4" "Ab1!"]
+    ]
+
     test "no validator" [
         assert -> throws? [valid? "drkameleon@gmail.com"]
         assert -> throws? [valid?.emial "drkameleon@gmail.com"]
