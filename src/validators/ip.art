@@ -123,15 +123,14 @@ define :ipValidator is :validator [
     ;------------------
 
     action: method [str, opts][
-        ; First check if it matches the basic format
-        validIP?: false
-        if opts\v4 -> validIP?: match? str \isIpv4
-        if opts\v6 -> validIP?: \validIPv6? str
+        ; if no specific version is requested,
+        ; any of them will do
+        anyVersion?: nor? opts\v4 opts\v6
 
-        if nor? opts\v4 opts\v6 -> 
-            validIP?: or? [match? str \isIpv4][\validIPv6? str]
+        if and? [or? anyVersion? opts\v4][match? str \isIpv4] -> return true
+        if and? [or? anyVersion? opts\v6][\validIPv6? str] -> return true
 
-        return validIP?
+        return false
     ]
 
     test: method [][
@@ -172,6 +171,9 @@ define :ipValidator is :validator [
 
                 ["2001:db8:3333:4444:5555:6666:7777:8888"       [v6: true]]
                 ["2001:db8::1234:5678"                          [v6: true]]
+
+                ["1.2.3.4"              [v4: true, v6: true]]
+                ["2001:db8::1234:5678"  [v4: true, v6: true]]
             ]
 
             invalid: [
@@ -205,6 +207,8 @@ define :ipValidator is :validator [
 
                 ["2001:db8:3333:4444:5555:6666:7777:8888"       [v4: true]]
                 ["2001:db8::1234:5678"                          [v4: true]]
+
+                ["fdsfsdf"              [v4: true, v6: true]]
             ]
         ]
     ]
