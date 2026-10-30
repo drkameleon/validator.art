@@ -18,7 +18,7 @@ define :urlValidator is :validator [
     ; built-in data
     ;------------------
 
-    isUrl: {/^(https?:\/\/)(localhost(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?|((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+([a-zA-Z]{2,63})|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?)(\/[^\s]*)?$/}
+    isUrl: {/^(https?:\/\/)(localhost|((?!-)(?![a-zA-Z\-0-9]*--)[a-zA-Z\-0-9]{1,63}(?<!-)\.)+([a-zA-Z]{2,63})|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?([\/?#][^\s]*)?$/}
 
     ;------------------
     ; helpers
@@ -34,6 +34,9 @@ define :urlValidator is :validator [
         parts: split.by:"/" url
         domain: parts\2
         if not? null? domain [
+            ; strip port, query & fragment (if any)
+            domain: replace domain {/[:?#].*$/} ""
+
             domainParts: split.by:"." domain
             if (size domainParts) >= 2 [
                 ; Try multi-part TLD first
@@ -148,6 +151,21 @@ define :urlValidator is :validator [
                 "http://127.0.0.1"
                 "http://127.0.0.1:3000"
                 "http://192.168.1.1:8080"
+
+                ; Domains with ports
+                "https://example.com:8443"
+                "https://example.com:8443/path"
+                "https://sub.example.co.uk:8080/x"
+
+                ; Query/fragment without path
+                "https://example.com?x=1"
+                "https://example.com#top"
+                "https://example.co.uk?x=1"
+                "http://localhost:8080?x=1"
+
+                ; Double hyphens outside the domain
+                "https://example.com/foo--bar"
+                "https://example.com/a/b?x=--y"
             ]
 
             invalid: [
@@ -230,6 +248,13 @@ define :urlValidator is :validator [
                 ; Invalid co.* combinations
                 "https://example.co.wrongcountry"
                 "https://website.com.invalidcountry"
+
+                ; Invalid ports/TLDs for domains
+                "https://example.com:0"
+                "https://example.com:65536"
+                "https://example.com:"
+                "https://example.wrongtld:8080"
+                "https://example.wrongtld?x=1"
                 
             ]
         ]
