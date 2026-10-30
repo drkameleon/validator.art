@@ -81,9 +81,6 @@ define :ipValidator is :validator [
 
         ; Split into segments
         segments: split.by:":" ip
-        
-        ; Basic validations
-        if 8 < size segments -> return false
 
         ; Check for double colon (zero compression)
         hasCompression?: contains? ip "::"
@@ -92,11 +89,9 @@ define :ipValidator is :validator [
         if 1 < size match ip {/::+/} ->  ; if we find more than one "::" pattern
             return false
 
-        ; If we have compression, don't check empty first/last segments
-        unless hasCompression? [
-            if empty? first segments -> return false  ; leading colon
-            if empty? last segments -> return false   ; trailing colon
-        ]
+        ; A leading/trailing colon is only allowed as part of "::"
+        if and? [prefix? ip ":"][not? prefix? ip "::"] -> return false
+        if and? [suffix? ip ":"][not? suffix? ip "::"] -> return false
 
         ; Count empty segments (zero compression)
         emptyCount: enumerate segments => empty?
@@ -104,6 +99,12 @@ define :ipValidator is :validator [
         if emptyCount = 2 [
             if not? hasCompression? -> return false
         ]
+
+        ; Without compression, we need exactly 8 groups;
+        ; with compression, "::" has to stand for at least one
+        groups: (size segments) - emptyCount
+        if and? [not? hasCompression?][8 <> groups] -> return false
+        if and? [hasCompression?][7 < groups] -> return false
 
         ; Validate each segment
         valid: true
@@ -154,6 +155,8 @@ define :ipValidator is :validator [
                 "fe80::1ff:fe23:4567:890a"              
                 "fe80::1ff:fe23:4567:890a%eth0"         ; With zone index
                 "1:2:3:4:5:6:7:8"                       ; Full, no compression
+                "::2:3:4:5:6:7:8"                       ; Single leading group compressed
+                "1:2:3:4:5:6:7::"                       ; Single trailing group compressed
 
                 ; IPv4-mapped IPv6 addresses
                 "::ffff:192.0.2.128"
@@ -190,6 +193,12 @@ define :ipValidator is :validator [
                 "2001:db8::1::1"                                ; Multiple zero compressions
                 "02001:db8::"                                   ; Leading zero
                 "2001:db8::/32"                                 ; CIDR notation not supported
+                "cafe"                                          ; Single group
+                "1:2:3:4"                                       ; Too few segments
+                "1:2:3:4:5:6:7"                                 ; Too few segments
+                "1::2:3:4:5:6:7:8"                              ; Too many segments (with compression)
+                ":1::2"                                         ; Leading single colon
+                "1::2:"                                         ; Trailing single colon
 
                 ["1.2.3.4"      [v6: true]]
                 ["127.0.0.1"    [v6: true]]
