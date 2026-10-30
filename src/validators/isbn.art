@@ -54,9 +54,15 @@ define :isbnValidator is :validator [
 
     action: method [str, opts][
         sanitized: []
+        parts: split replace str {/[\s-]+/} ""
+
+        ; for ISBN-10, the check digit
+        ; may also be an X (standing for 10)
+        if and? [10 = size parts][in? last parts ["X" "x"]] ->
+            parts: (chop parts) ++ ["10"]
 
         if throws? [
-            sanitized: to [:integer] split replace str {/[\s-]+/} ""
+            sanitized: to [:integer] parts
         ] -> return false
 
         if opts\["10"] -> return \isIsbn10? sanitized
@@ -72,8 +78,12 @@ define :isbnValidator is :validator [
                 "0-306-40615-2"
                 "9780596528126"
                 "978-0596528126"
+                "080442957X"
+                "0-8044-2957-X"
+                "080442957x"
 
                 ["0306406152"       ["10": true]]
+                ["080442957X"       ["10": true]]
                 ["978-0596528126"   ["13": true]]
             ]
 
@@ -81,8 +91,12 @@ define :isbnValidator is :validator [
                 "askdjashd"
                 "0306777152"
                 "978-0596528199"
+                "080442958X"
+                "08044295X7"
+                "978059652812X"
 
                 ["0306406152"       ["13": true]]
+                ["080442957X"       ["13": true]]
                 ["978-0596528126"   ["10": true]]
             ]
         ]
