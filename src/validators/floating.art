@@ -20,6 +20,11 @@ define :floatingValidator is :validator [
     ;------------------
 
     action: function [str, opts][
+        ; make sure there's at least one digit,
+        ; since the converter would also happily
+        ; accept things like `nan` or `inf`
+        unless match? str {/[0-9]/} -> return false
+
         ; based on our own `to` converter
         ; and catching possible errors with `throws?`
         not? throws? [
@@ -39,6 +44,10 @@ define :floatingValidator is :validator [
                 ""
                 "three"
                 "%$#@^#$"
+                "nan"
+                "NaN"
+                "inf"
+                "-inf"
             ]
         ]
     ]
