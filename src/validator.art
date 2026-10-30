@@ -86,8 +86,22 @@ export module [
     valid?: method.public [str :string :block][
         ;; description: « check if given string is valid
         ;; options: [
+        ;;      base58: « check base-58 encoding
+        ;;      card: « check credit card number
+        ;;      date: « test if string contains valid date
         ;;      email: « verify e-mail address
+        ;;      floating: « test if string contains a parsable floating-point value
+        ;;      iban: « verify IBAN (International Bank Account Number)
+        ;;      integer: « test if string contains a parsable integer value
         ;;      ip: « verify IP address
+        ;;      isbn: « verify ISBN code
+        ;;      json: « test if string contains valid JSON
+        ;;      md5: « check if valid MD5 hash
+        ;;      password: « check if given password is strong enough
+        ;;      sedol: « verify SEDOL code
+        ;;      semver: « verify version string (SemVer)
+        ;;      sha: « verify SHA hash
+        ;;      tld: « verify TLD (Top-Level Domain)
         ;;      url: « verify URL
         ;; ]
         ;; returns: :logical
@@ -107,22 +121,29 @@ export module [
             str
         ]
 
-        found?: false
+        ; first, collect all requested validators
+        ; (along with their options), so that all
+        ; attributes are consumed before we return -
+        ; otherwise, leftovers would leak into the next call
+        requested: []
         loop \validators [name, validator][
             if attr name [
-                found?: true
                 options: \fetchParams validator\params
-                loop inputs 'inp [
-                    unless do [ validator\action inp options ] ->
-                        return false
-                ]
+                requested: requested ++ @[validator, options]
             ]
         ]
 
         ; make sure we don't silently accept
         ; a missing (or misspelled) validator
-        unless found? ->
+        if empty? requested ->
             panic "no (valid) validator specified"
+
+        loop requested [validator, options][
+            loop inputs 'inp [
+                unless do [ validator\action inp options ] ->
+                    return false
+            ]
+        ]
 
         return true
     ]
