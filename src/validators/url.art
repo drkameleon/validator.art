@@ -26,7 +26,7 @@ define :urlValidator is :validator [
 
     ; Extract TLD from URL
     getTld: function [url][
-        if or? match? url {/^https?:\/\/localhost/} 
+        if or? match? url {/^https?:\/\/localhost(?:[:\/?#]|$)/}
                match? url {/^https?:\/\/\d+\.\d+\.\d+\.\d+/} [
             return null
         ]
@@ -215,6 +215,8 @@ define :urlValidator is :validator [
                 "http://localhost:65536"       ; Port too high
                 "http://127.0.0.1:65536"       ; Port too high
                 "http://localhost:-80"         ; Negative port
+                "http://localhost.wrongtld"    ; Not really localhost
+                "http://localhostx.wrongtld"   ; Not really localhost
                 "http://localhost:abc"         ; Non-numeric port
                 "https://127.0.0.1:"           ; Port missing number
                 

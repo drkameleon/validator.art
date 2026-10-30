@@ -2,18 +2,16 @@ import {unitt}!
 import ./"../src/validator.art"!
 
 suite "Test function calls" [
-    test "single param" [
-        assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
-        assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
-        assert -> valid?.sedol ["B15KXQ8"]
-        assert -> not? valid?.sedol ["12345o6"]
-        assert -> not? valid?.email ["drkameleon", "yaniszaf"]
-        assert -> not? valid?.email ["drkameleon@gmail.com", "yaniszaf"]
-        assert -> not? valid?.url ["google", "arturolang"]
-        assert -> not? valid?.url ["https://www.google.com", "arturolang"]
+    test "single input" [
+        assert -> valid?.email "drkameleon@gmail.com"
+        assert -> valid?.url "https://arturo-lang.io"
+        assert -> valid?.sedol "B15KXQ8"
+        assert -> not? valid?.sedol "12345o6"
+        assert -> not? valid?.email "drkameleon"
+        assert -> not? valid?.url "google"
     ]
 
-    test "multiple params" [
+    test "multiple inputs" [
         assert -> valid?.email ["drkameleon@gmail.com", "yaniszaf@gmail.com"]
         assert -> valid?.url ["https://www.google.com", "https://arturo-lang.io"]
         assert -> not? valid?.email ["drkameleon", "yaniszaf"]
@@ -35,6 +33,15 @@ suite "Test function calls" [
     test "no validator" [
         assert -> throws? [valid? "drkameleon@gmail.com"]
         assert -> throws? [valid?.emial "drkameleon@gmail.com"]
+    ]
+
+    test "no leftover attributes" [
+        ; `url` fails first, but `.semver` & `.format`
+        ; must not leak into the next calls
+        assert -> not? valid?.semver.url "1.2.3"
+        assert -> valid?.url "https://arturo-lang.io"
+        assert -> not? valid?.url.date.format:'short "https://arturo-lang.io"
+        assert -> valid?.date "2024-01-31"
     ]
 ]
 
